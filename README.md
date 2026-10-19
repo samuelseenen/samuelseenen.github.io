@@ -27,6 +27,7 @@ Puedes verlo en **[samuelsenen.dev](https://samuelsenen.dev)**.
 
 ```
 index.html          Estructura y contenido de la página
+404.html            Página de error, con el estilo del Bloc de notas
 css/styles.css      Estilos
 js/i18n.js          Textos en español e inglés
 js/main.js          Idioma, tema claro/oscuro, menú móvil, texto dividido y copia del email

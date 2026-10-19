@@ -41,9 +41,9 @@
     <!-- Tipografías alojadas en el propio sitio: Schibsted Grotesk (texto y títulos) e IBM Plex Mono (código, fechas y medidas) -->
     <link rel="preload" href="assets/fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="assets/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin />
-    <!-- ?v=9: al cambiar el CSS o el JS, sube este número en todos los enlaces
+    <!-- ?v=10: al cambiar el CSS o el JS, sube este número en todos los enlaces
          para que los navegadores descarguen la versión nueva y no usen la guardada -->
-    <link rel="stylesheet" href="css/styles.css?v=9" />
+    <link rel="stylesheet" href="css/styles.css?v=10" />
 
     <!-- Se ejecuta antes de pintar la página para evitar parpadeos de tema e idioma -->
     <script>
@@ -80,8 +80,8 @@
     </style>
 
     <!-- Textos e idioma primero, para no esperar a GSAP antes de mostrar la página -->
-    <script defer src="js/i18n.js?v=9"></script>
-    <script defer src="js/main.js?v=9"></script>
+    <script defer src="js/i18n.js?v=10"></script>
+    <script defer src="js/main.js?v=10"></script>
 
     <!-- GSAP (animaciones) desde CDN, con comprobación de integridad -->
     <script
@@ -98,9 +98,9 @@
     ></script>
 
     <!-- Scripts que usan GSAP (el orden importa) -->
-    <script defer src="js/banner.js?v=9"></script>
-    <script defer src="js/hero-canvas.js?v=9"></script>
-    <script defer src="js/animations.js?v=9"></script>
+    <script defer src="js/banner.js?v=10"></script>
+    <script defer src="js/hero-canvas.js?v=10"></script>
+    <script defer src="js/animations.js?v=10"></script>
   </head>
 
   <body>
@@ -213,9 +213,9 @@
                   <h3><span data-i18n="exp1.role">Front-End Developer</span> <span class="at">@ WPP Production</span></h3>
                   <p class="city">Madrid</p>
                   <ul class="points">
-                    <li data-i18n="exp1.p1">Creatividades interactivas HTML5 con JavaScript, CSS3 y GSAP para campañas internacionales.</li>
-                    <li data-i18n="exp1.p2">Animación e interactividad optimizando peso y rendimiento según las especificaciones de cada plataforma.</li>
-                    <li data-i18n="exp1.p3">Compatibilidad entre navegadores, dispositivos y múltiples formatos y resoluciones.</li>
+                    <li data-i18n="exp1.p1">Hago creatividades HTML5 interactivas con JavaScript, CSS y GSAP para campañas internacionales.</li>
+                    <li data-i18n="exp1.p2">Cada plataforma tiene su límite de peso y sus normas, y la animación tiene que caber en ellas sin perder fluidez.</li>
+                    <li data-i18n="exp1.p3">Me aseguro de que se vean igual en todos los navegadores, dispositivos y formatos.</li>
                   </ul>
                   <ul class="tags" data-i18n-aria="exp.tags" aria-label="Tecnologías">
                     <li class="tag">HTML5</li>
@@ -233,9 +233,9 @@
                   <h3><span data-i18n="exp2.role">Front-End Developer</span> <span class="at">@ Hogarth</span></h3>
                   <p class="city">Madrid</p>
                   <ul class="points">
-                    <li data-i18n="exp2.p1">Desarrollo y mantenimiento de banners publicitarios con HTML5, CSS3 y JavaScript.</li>
-                    <li data-i18n="exp2.p2">Emails responsive compatibles con los principales clientes de correo.</li>
-                    <li data-i18n="exp2.p3">Control de calidad de creatividades junto a equipos multidisciplinares.</li>
+                    <li data-i18n="exp2.p1">Desarrollé y mantuve banners publicitarios con HTML5, CSS y JavaScript.</li>
+                    <li data-i18n="exp2.p2">Maqueté emails responsive que se vieran bien en Gmail, Outlook y móvil.</li>
+                    <li data-i18n="exp2.p3">Revisaba con el resto del equipo que cada creatividad estuviera bien antes de entregarla.</li>
                   </ul>
                   <ul class="tags" data-i18n-aria="exp.tags" aria-label="Tecnologías">
                     <li class="tag">HTML5</li>
@@ -253,8 +253,8 @@
                   <h3><span data-i18n="exp3.role">Becario de desarrollo web</span> <span class="at">@ Futura Vive</span></h3>
                   <p class="city">Madrid</p>
                   <ul class="points">
-                    <li data-i18n="exp3.p1">Aplicaciones web y templates de WordPress a medida con PHP, JavaScript, Bootstrap y MySQL.</li>
-                    <li data-i18n="exp3.p2">Sistema de acceso por códigos QR para instalaciones municipales, de la interfaz a la base de datos.</li>
+                    <li data-i18n="exp3.p1">Hice aplicaciones web y plantillas de WordPress a medida con PHP, JavaScript, Bootstrap y MySQL.</li>
+                    <li data-i18n="exp3.p2">Desarrollé un sistema de acceso por códigos QR para instalaciones municipales, desde la interfaz hasta la base de datos.</li>
                   </ul>
                   <ul class="tags" data-i18n-aria="exp.tags" aria-label="Tecnologías">
                     <li class="tag">PHP</li>
@@ -424,6 +424,8 @@
                 <li>HTML5</li>
                 <li>CSS3</li>
                 <li>JavaScript</li>
+                <li>TypeScript</li>
+                <li>Angular</li>
                 <li>GSAP</li>
                 <li>Bootstrap</li>
               </ul>
@@ -431,17 +433,12 @@
             <div class="group">
               <h3 data-i18n="stack.backend">Backend y datos</h3>
               <ul>
+                <li>Node.js</li>
+                <li>Express</li>
                 <li>PHP</li>
                 <li>MySQL</li>
                 <li>REST APIs</li>
                 <li>WordPress</li>
-              </ul>
-            </div>
-            <div class="group learning">
-              <h3 data-i18n="stack.learning">Aprendiendo</h3>
-              <ul>
-                <li>Node.js</li>
-                <li>Angular</li>
               </ul>
             </div>
             <div class="group">
@@ -562,7 +559,7 @@
 
     <footer class="footer">
       <div class="container foot">
-        <p>© <span data-year>2026</span> Samuel Senén López · <span data-i18n="footer.rights">Hecho a mano con HTML, CSS y JavaScript.</span></p>
+        <p>© <span data-year>2026</span> Samuel Senén López · <span data-i18n="footer.rights">Hecho con HTML, CSS y JavaScript.</span></p>
         <a class="to-top" href="#main">
           <span data-i18n="footer.top">Volver arriba</span>
           <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up"></use></svg>

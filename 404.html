@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Página no encontrada | Samuel Senén López</title>
+    <meta name="robots" content="noindex" />
+    <meta name="theme-color" content="#0d0f12" />
+    <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg" />
+
+    <!-- GitHub Pages sirve esta página en cualquier dirección, así que las rutas van desde la raíz -->
+    <link rel="preload" href="/assets/fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/assets/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="/css/styles.css?v=10" />
+
+    <!-- Mismo tema e idioma que el resto de la web -->
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var theme = null;
+        var lang = null;
+        try {
+          theme = localStorage.getItem('theme');
+          lang = localStorage.getItem('lang');
+        } catch (e) {}
+        root.dataset.theme = theme || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        root.lang = lang || (navigator.language.toLowerCase().indexOf('es') === 0 ? 'es' : 'en');
+      })();
+    </script>
+    <style>
+      .not-found {
+        display: grid;
+        align-content: center;
+        min-height: 100dvh;
+        padding-block: 4rem;
+      }
+
+      .not-found pre {
+        margin: 0;
+        font-family: var(--font-mono);
+        font-size: clamp(1rem, 2.6vw, 1.375rem);
+        line-height: 1.75;
+        color: var(--muted);
+        white-space: pre-wrap;
+      }
+
+      /* Cursor del Bloc de notas */
+      .not-found .caret {
+        display: inline-block;
+        width: 0.1em;
+        height: 1.2em;
+        margin-left: 0.1em;
+        vertical-align: -0.2em;
+        background: var(--accent);
+        animation: blink 1.06s steps(1) infinite;
+      }
+
+      @keyframes blink {
+        50% {
+          opacity: 0;
+        }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        .not-found .caret {
+          animation: none;
+        }
+      }
+
+      .not-found p {
+        margin-top: 2rem;
+        max-width: 46ch;
+        color: var(--muted);
+      }
+
+      .not-found .btn {
+        justify-self: start;
+        margin-top: 1.5rem;
+      }
+
+      /* Textos en los dos idiomas: se muestra el del idioma activo */
+      html[lang='es'] [lang='en'],
+      html[lang='en'] [lang='es'] {
+        display: none;
+      }
+    </style>
+  </head>
+
+  <body>
+    <main class="container not-found">
+      <pre aria-hidden="true">&lt;html&gt;
+&lt;body&gt;
+&lt;h1&gt;404&lt;/h1&gt;
+<span lang="es">&lt;p&gt;Esta pagina no existe&lt;/p&gt;</span><span lang="en">&lt;p&gt;This page does not exist&lt;/p&gt;</span>
+&lt;/body&gt;
+&lt;/html&gt;<span class="caret"></span></pre>
+
+      <h1 class="sr-only"><span lang="es">Página no encontrada</span><span lang="en">Page not found</span></h1>
+      <p>
+        <span lang="es">La página que buscas no existe o ha cambiado de sitio.</span>
+        <span lang="en">The page you are looking for doesn't exist or has moved.</span>
+      </p>
+      <a class="btn btn-primary" href="/">
+        <span lang="es">Volver al portfolio</span>
+        <span lang="en">Back to the portfolio</span>
+      </a>
+    </main>
+  </body>
+</html>
