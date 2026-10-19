@@ -15,21 +15,30 @@
    ========================================================= */
 
 /* ---------- 1. Variables ----------
-   Fuentes: Geist y Geist Mono (variables, solo caracteres latinos) */
+   Fuentes: Schibsted Grotesk (texto y títulos, variable) e IBM Plex Mono
+   (código, fechas y medidas). Solo caracteres latinos. */
 @font-face {
-  font-family: 'Geist';
+  font-family: 'Schibsted Grotesk';
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 400 900;
   font-display: swap;
-  src: url('../assets/fonts/geist.woff2') format('woff2');
+  src: url('../assets/fonts/schibsted-grotesk.woff2') format('woff2');
 }
 
 @font-face {
-  font-family: 'Geist Mono';
+  font-family: 'IBM Plex Mono';
   font-style: normal;
-  font-weight: 100 900;
+  font-weight: 400;
   font-display: swap;
-  src: url('../assets/fonts/geist-mono.woff2') format('woff2');
+  src: url('../assets/fonts/ibm-plex-mono-400.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/ibm-plex-mono-600.woff2') format('woff2');
 }
 
 /* Oscuro por defecto. El modo claro se activa con [data-theme="light"] en <html>. */
@@ -46,9 +55,9 @@
   --on-accent: #050c1c;
   --shadow: 0 24px 60px -24px rgb(0 0 0 / 0.6);
 
-  --font-sans: 'Geist', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Schibsted Grotesk', ui-sans-serif, system-ui, sans-serif;
   --font-display: var(--font-sans);
-  --font-mono: 'Geist Mono', ui-monospace, 'SFMono-Regular', monospace;
+  --font-mono: 'IBM Plex Mono', ui-monospace, 'SFMono-Regular', monospace;
 
   --radius: 8px;
   --max: 1120px;
@@ -58,14 +67,16 @@
   color-scheme: dark;
 }
 
+/* Modo claro: fondos más diferenciados, bordes visibles y un gris de texto
+   secundario más oscuro, porque es el que más se lee en toda la página */
 :root[data-theme='light'] {
-  --bg: #f3f4f6;
-  --surface: #fbfbfc;
-  --surface-2: #e9ecf0;
-  --border: #d6dae1;
-  --border-strong: #b9bfc9;
-  --text: #13161b;
-  --muted: #535c68;
+  --bg: #f2f3f5;
+  --surface: #ffffff;
+  --surface-2: #e6e9ee;
+  --border: #cdd2da;
+  --border-strong: #a3abb7;
+  --text: #111418;
+  --muted: #424a55;
   --accent: #1f5ad6;
   --accent-soft: rgb(31 90 214 / 0.09);
   --on-accent: #f5f8ff;
@@ -135,6 +146,22 @@ ol {
 img,
 svg {
   display: block;
+}
+
+/* Barra de scroll, subrayados y cifras con la misma paleta que el resto */
+html {
+  scrollbar-color: var(--border-strong) var(--bg);
+}
+
+a {
+  text-underline-offset: 0.2em;
+}
+
+.dates,
+.years,
+.time,
+.level {
+  font-variant-numeric: tabular-nums;
 }
 
 ::selection {
@@ -282,12 +309,6 @@ svg {
   border-color: var(--text);
 }
 
-/* Botones magnéticos: GSAP mueve el botón, así que no se anima transform con CSS */
-.magnetic {
-  will-change: transform;
-  transition-property: background-color, border-color, color;
-}
-
 .icon-btn {
   display: inline-grid;
   place-items: center;
@@ -315,8 +336,7 @@ svg {
   padding: 0.2rem 0.55rem;
   border: 1px solid var(--border);
   border-radius: 999px;
-  font-family: var(--font-mono);
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   color: var(--muted);
 }
 
@@ -463,8 +483,9 @@ svg {
   border: 1px solid var(--border);
   border-radius: var(--radius);
   background: transparent;
-  font-family: var(--font-mono);
+  font: inherit;
   font-size: 0.8125rem;
+  font-weight: 500;
   color: var(--muted);
   cursor: pointer;
   transition: border-color 0.2s ease;
@@ -499,8 +520,9 @@ html[lang='en'] .lang [data-lang='en'] {
   border-radius: var(--radius);
   background: transparent;
   color: var(--text);
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 500;
   cursor: pointer;
 }
 
@@ -563,15 +585,13 @@ html[lang='en'] .lang [data-lang='en'] {
   border-bottom: 1px solid var(--border);
 }
 
-/* Rejilla de puntos: se desvanece hacia los bordes */
+/* Fondo de la portada: la página del Bloc de notas (hero-canvas.js) */
 .hero-canvas {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
   pointer-events: none;
-  -webkit-mask-image: radial-gradient(120% 90% at 50% 40%, #000 35%, transparent 85%);
-  mask-image: radial-gradient(120% 90% at 50% 40%, #000 35%, transparent 85%);
 }
 
 .hero-grid {
@@ -583,37 +603,15 @@ html[lang='en'] .lang [data-lang='en'] {
   min-height: calc(100dvh - 64px - 12rem);
 }
 
-.role {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 0.6rem 0.9rem;
-  color: var(--muted);
-  font-size: 0.875rem;
-  letter-spacing: 0.02em;
-}
-
-/* Disponibilidad: el punto indica un estado real, no es decoración */
-.status {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.3rem 0.7rem;
-  border: 1px solid var(--border-strong);
-  border-radius: 999px;
-  color: var(--text);
-}
-
+/* Disponibilidad (tarjeta de contacto): el punto indica un estado real */
 .status-dot {
   width: 7px;
   height: 7px;
   border-radius: 50%;
   background: #22c55e;
-  box-shadow: 0 0 0 3px rgb(34 197 94 / 0.18);
 }
 
 .hero-title {
-  margin-top: 1.1rem;
   font-size: clamp(2.25rem, 5vw, 3.75rem);
   letter-spacing: -0.045em;
   line-height: 1;
@@ -622,7 +620,7 @@ html[lang='en'] .lang [data-lang='en'] {
 
 .lead {
   margin-top: 1.5rem;
-  max-width: 40ch;
+  max-width: 46ch;
   font-size: clamp(1rem, 1.3vw, 1.125rem);
   color: var(--muted);
 }
@@ -634,10 +632,25 @@ html[lang='en'] .lang [data-lang='en'] {
   margin-top: 2.25rem;
 }
 
-.visual {
+/* Hueco de la página del Bloc de notas: hero-canvas.js dibuja el código
+   dentro. La proporción es la del bloque de texto (24 caracteres de ancho
+   × 12 líneas), así el tamaño de letra sale del ancho del hueco. */
+.notepad {
   justify-self: end;
   width: 100%;
-  max-width: 360px;
+  max-width: 330px;
+  margin: 0;
+}
+
+.notepad-slot {
+  width: 100%;
+  aspect-ratio: 14.4 / 21;
+}
+
+.notepad figcaption {
+  margin-top: 1rem;
+  font-size: 0.875rem;
+  color: var(--muted);
 }
 
 /* En escritorio la portada ocupa la pantalla porque se fija durante el scroll */
@@ -659,20 +672,22 @@ html[lang='en'] .lang [data-lang='en'] {
     min-height: 0;
   }
 
-  .visual {
+  .notepad {
     justify-self: start;
+    max-width: 240px;
   }
 }
 
-/* Tablet en vertical: texto y banner lado a lado, sin hueco a la derecha */
+/* Tablet en vertical: texto y código lado a lado, sin hueco a la derecha */
 @media (min-width: 700px) and (max-width: 899px) {
   .hero-grid {
-    grid-template-columns: 1fr minmax(240px, 300px);
+    grid-template-columns: 1fr minmax(220px, 260px);
     gap: 2rem;
   }
 
-  .visual {
+  .notepad {
     justify-self: end;
+    max-width: none;
   }
 }
 
@@ -843,7 +858,9 @@ html:not(.js) .banner .f {
 }
 
 /* Durante el túnel (animations.js) la experiencia está encima de la portada:
-   transparente para que se vea el túnel, y sin bloquear los clics de la portada */
+   transparente para que se vea el túnel, y sin bloquear los clics de la portada.
+   GSAP la envuelve en un .pin-spacer que también hay que dejar "atravesar". */
+.tunnel-active .pin-spacer-experiencia,
 .tunnel-active #experiencia {
   background: transparent;
   pointer-events: none;
@@ -989,11 +1006,95 @@ html:not(.js) .banner .f {
   border-block: 1px solid var(--border);
 }
 
+/* Proyecto destacado: texto a la izquierda, capturas a la derecha */
+.project {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.4fr);
+  gap: clamp(1.5rem, 4vw, 3rem);
+  align-items: center;
+  margin-top: 2rem;
+  padding: clamp(1.25rem, 2.5vw, 2rem);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--bg);
+}
+
+.project h3 {
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+}
+
+.project-meta {
+  margin-top: 0.35rem;
+  font-size: 0.875rem;
+  color: var(--muted);
+}
+
+.project-copy > p:not(.project-meta) {
+  margin-top: 1rem;
+  color: var(--muted);
+  max-width: 48ch;
+}
+
+.project-copy .btn {
+  margin-top: 1.5rem;
+}
+
+.project-shots {
+  margin: 0;
+}
+
+.shot-main {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+}
+
+.thumbs {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.thumb {
+  padding: 0;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  background: none;
+  overflow: hidden;
+  cursor: pointer;
+  opacity: 0.6;
+  transition: opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.thumb img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+.thumb:hover,
+.thumb.is-current {
+  opacity: 1;
+}
+
+.thumb.is-current {
+  border-color: var(--accent);
+}
+
+@media (max-width: 899px) {
+  .project {
+    grid-template-columns: 1fr;
+  }
+}
+
 .bento {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: 0.875rem;
-  margin-top: 2rem;
+  margin-top: 0.875rem;
 }
 
 .cell {
@@ -1009,12 +1110,7 @@ html:not(.js) .banner .f {
   position: relative;
 }
 
-.cell .icon-lg {
-  color: var(--accent);
-}
-
 .cell h3 {
-  margin-top: 0.85rem;
   font-size: 1.0625rem;
   letter-spacing: -0.015em;
 }
@@ -1026,45 +1122,14 @@ html:not(.js) .banner .f {
   max-width: 46ch;
 }
 
-/* Brillo que sigue al cursor (animations.js pone las variables --mx y --my) */
-.spot {
-  transition: transform 0.4s var(--ease-out), border-color 0.3s ease;
-}
-
-.spot::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  background: radial-gradient(420px circle at var(--mx, 50%) var(--my, 50%), var(--accent-soft), transparent 45%);
-}
-
-.spot::after {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  padding: 1px;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 0.3s ease;
-  background: radial-gradient(260px circle at var(--mx, 50%) var(--my, 50%), var(--accent), transparent 60%);
-  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask: linear-gradient(#000 0 0) content-box exclude, linear-gradient(#000 0 0);
+/* Al pasar el ratón solo se marca el borde */
+.cell {
+  transition: border-color 0.25s ease;
 }
 
 @media (hover: hover) {
-  .spot:hover {
-    transform: translateY(-4px);
-  }
-
-  .spot:hover::before,
-  .spot:hover::after {
-    opacity: 1;
+  .cell:hover {
+    border-color: var(--border-strong);
   }
 }
 
@@ -1075,9 +1140,6 @@ html:not(.js) .banner .f {
   grid-template-columns: 1fr auto;
   gap: 2rem;
   align-items: end;
-  background:
-    radial-gradient(120% 90% at 100% 100%, var(--accent-soft), transparent 60%),
-    var(--bg);
 }
 
 .emails {
@@ -1085,8 +1147,17 @@ html:not(.js) .banner .f {
 }
 
 /* Banners: formatos dibujados a escala */
+/* Banners: texto y formatos a la izquierda, el banner interactivo a la derecha */
 .banners {
-  grid-column: span 2;
+  grid-column: span 3;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 300px;
+  gap: 2rem;
+  align-items: start;
+}
+
+.banners .demo {
+  width: 100%;
 }
 
 /* Los formatos se dibujan a escala y ocupan todo el ancho de la tarjeta:
@@ -1138,12 +1209,23 @@ html:not(.js) .banner .f {
 .f-300x250 { width: calc(var(--u) * 300); height: calc(var(--u) * 250); }
 .f-320x50 { width: calc(var(--u) * 320); height: calc(var(--u) * 50); }
 
-/* Emails: patrón de líneas tipo bandeja */
-.emails {
-  padding-bottom: 5.5rem;
-  background:
-    repeating-linear-gradient(180deg, transparent 0 22px, var(--border) 22px 23px) bottom / 100% 3.5rem no-repeat,
-    var(--bg);
+/* Emails: clientes de correo en los que se prueban las plantillas */
+.clients {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 1.25rem;
+  margin-top: 1.5rem;
+  font-size: 0.875rem;
+}
+
+.clients li {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.clients .icon {
+  color: var(--accent);
 }
 
 .flow {
@@ -1174,11 +1256,10 @@ html:not(.js) .banner .f {
 }
 
 .wordpress {
-  grid-column: span 3;
+  grid-column: span 2;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 2rem;
-  align-items: center;
+  gap: 1.5rem;
+  align-content: start;
 }
 
 .snippet {
@@ -1232,10 +1313,6 @@ html:not(.js) .banner .f {
   .flow li + li::before {
     content: '→';
   }
-
-  .emails {
-    padding-bottom: 4rem;
-  }
 }
 
 @media (min-width: 600px) and (max-width: 899px) {
@@ -1244,18 +1321,14 @@ html:not(.js) .banner .f {
   }
 
   .qr,
-  .wordpress {
+  .banners {
     grid-column: span 2;
   }
 
-  /* Emails y banners comparten fila */
+  /* Emails y WordPress comparten fila; los banners van debajo, a todo el ancho */
   .banners {
     order: 1;
-  }
-
-  .wordpress {
-    order: 2;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: minmax(0, 1fr) 260px;
   }
 }
 
@@ -1286,8 +1359,7 @@ html:not(.js) .banner .f {
 }
 
 .group h3 {
-  font-family: var(--font-mono);
-  font-size: 0.8125rem;
+  font-size: 0.875rem;
   font-weight: 500;
   letter-spacing: 0.02em;
   color: var(--muted);
@@ -1332,6 +1404,26 @@ html:not(.js) .banner .f {
 
 .about .title {
   font-size: clamp(1.375rem, 2.4vw, 1.75rem);
+}
+
+/* Cómo empecé: texto corrido, a la anchura cómoda de lectura */
+.origin {
+  max-width: 64ch;
+  margin-bottom: clamp(3.5rem, 7vw, 5rem);
+}
+
+.origin p {
+  margin-top: 1rem;
+  color: var(--muted);
+}
+
+.origin .title + p {
+  margin-top: 1.5rem;
+}
+
+.origin .aside {
+  margin-top: 1.5rem;
+  color: var(--text);
 }
 
 .edu {
@@ -1394,9 +1486,6 @@ html:not(.js) .banner .f {
 /* ---------- 11. Contacto y pie ---------- */
 .contact {
   border-top: 1px solid var(--border);
-  background:
-    radial-gradient(70% 60% at 0% 100%, var(--accent-soft), transparent 70%),
-    var(--bg);
 }
 
 /* Dos columnas: mensaje y email a la izquierda, datos a la derecha */
@@ -1408,7 +1497,7 @@ html:not(.js) .banner .f {
 }
 
 .big {
-  font-size: clamp(2.25rem, 5vw, 3.5rem);
+  font-size: clamp(2rem, 4.2vw, 3rem);
   letter-spacing: -0.045em;
   word-spacing: 0.12em;
   line-height: 1;
