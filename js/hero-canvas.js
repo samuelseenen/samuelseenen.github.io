@@ -1,7 +1,10 @@
 // =========================================================
-// hero-canvas.js: rejilla de puntos de la portada que se
-// ilumina alrededor del cursor. En pantallas táctiles el foco
-// de luz se mueve solo.
+// hero-canvas.js: fondo de la portada. Recrea la primera
+// página que escribí en el Bloc de notas en el instituto: el
+// código se teclea solo al cargar y se queda el cursor
+// parpadeando, en la columna derecha de la portada. En el
+// túnel (animations.js) la cámara entra en la línea de
+// "Hola mundo" hasta llegar a la experiencia.
 // =========================================================
 
 (function () {
@@ -11,51 +14,71 @@
   if (!canvas || !hero || !ctx) return;
 
   const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const finePointer = matchMedia('(hover: hover) and (pointer: fine)').matches;
-  const GAP = 26; // separación entre puntos
-  const RADIUS = 170; // radio del foco de luz
-  // En táctil el foco se mueve solo y pasa por detrás del texto: más suave
-  const spotStrength = finePointer ? 1 : 0.45;
+
+  // Sin tildes a propósito: así se escribía en el Bloc de notas
+  const CODE = [
+    '<html>',
+    '<head>',
+    '<title>Hola</title>',
+    '</head>',
+    '<body bgcolor="black">',
+    '<h1>Hola mundo</h1>',
+    '<p>Mi primera web</p>',
+    '<font color="blue">',
+    'Samuel</font>',
+    '<marquee>Hola!</marquee>',
+    '</body>',
+    '</html>',
+  ];
+  const FOCUS_LINE = 5; // la línea de <h1>, hacia la que va el túnel
+  const TOTAL = CODE.reduce((n, line) => n + line.length + 1, 0);
+  const CHAR_MS = 28; // velocidad de tecleo
+  const START_MS = 900; // espera a que entre el nombre
+  const BLINK_MS = 530;
 
   let w = 0;
   let h = 0;
-  let dotColor = '';
+  let size = 16;
+  let x0 = 0;
+  let y0 = 0;
+  let textColor = '';
   let accent = '';
-  let pointer = { x: -9999, y: -9999, active: false };
+  let show = true; // solo con texto y banner en dos columnas
   let visible = true;
   let raf = 0;
+  let startTime = 0;
+  let lastKey = '';
 
-  // Profundidad del túnel. animations.js la sube de 1 a TUNNEL_MAX con el scroll.
+  // Profundidad del túnel. animations.js la sube de 1 a 7 con el scroll.
   const TUNNEL_MAX = 7;
   const tunnel = (window.heroTunnel = { zoom: 1 });
 
-  // La rejilla base se pinta una sola vez en un canvas aparte;
-  // en cada frame solo se redibujan los puntos cercanos al foco.
-  const base = document.createElement('canvas');
-  const bctx = base.getContext('2d');
-
   function readColors() {
     const css = getComputedStyle(document.documentElement);
-    dotColor = css.getPropertyValue('--border-strong').trim();
+    textColor = css.getPropertyValue('--muted').trim();
     accent = css.getPropertyValue('--accent').trim();
   }
 
-  function paintBase() {
-    const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    base.width = w * dpr;
-    base.height = h * dpr;
-    bctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    bctx.clearRect(0, 0, w, h);
-    bctx.globalAlpha = 0.55;
-    bctx.fillStyle = dotColor;
-    bctx.beginPath();
-    for (let x = GAP / 2; x < w; x += GAP) {
-      for (let y = GAP / 2; y < h; y += GAP) {
-        bctx.moveTo(x + 1, y);
-        bctx.arc(x, y, 1, 0, Math.PI * 2);
-      }
+  // El código se dibuja dentro del hueco .notepad-slot de la portada. El
+  // hueco tiene la proporción del bloque de texto, así que el tamaño de
+  // letra es su ancho dividido entre el ancho de la línea más larga.
+  const LONGEST = Math.max(...CODE.map((line) => line.length));
+  const CHAR_RATIO = 0.6; // ancho de un carácter de IBM Plex Mono respecto a su tamaño
+  const slot = hero.querySelector('.notepad-slot');
+
+  // Posición del hueco dentro de la portada sin contar transformaciones
+  // (la entrada de la portada lo desplaza unos píxeles al cargar)
+  function layout() {
+    let x = 0;
+    let y = 0;
+    for (let el = slot; el && el !== hero; el = el.offsetParent) {
+      x += el.offsetLeft;
+      y += el.offsetTop;
     }
-    bctx.fill();
+    show = slot.offsetWidth > 0;
+    size = slot.offsetWidth / (LONGEST * CHAR_RATIO);
+    x0 = x;
+    y0 = y + size * 0.875;
   }
 
   function resize() {
@@ -65,115 +88,95 @@
     canvas.width = w * dpr;
     canvas.height = h * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    paintBase();
+    layout();
+    lastKey = '';
     draw(performance.now());
   }
 
-  // Túnel: la rejilla se amplía desde el centro, así que los puntos
-  // salen hacia los bordes como si la cámara avanzara entre ellos.
-  // Pasa del gris al color de acento y se desvanece al final.
-  function drawTunnel(z) {
-    const p = Math.min(1, (z - 1) / (TUNNEL_MAX - 1));
-    const cx = w / 2;
-    const cy = h * 0.45;
-    const r = Math.min(1 + (z - 1) * 0.7, 5);
-
-    // Solo los puntos de la rejilla que, ampliados, siguen dentro de la pantalla
-    const xMin = cx - cx / z;
-    const xMax = cx + (w - cx) / z;
-    const yMin = cy - cy / z;
-    const yMax = cy + (h - cy) / z;
-    const startX = Math.floor((xMin - GAP / 2) / GAP) * GAP + GAP / 2;
-    const startY = Math.floor((yMin - GAP / 2) / GAP) * GAP + GAP / 2;
-
-    const layers = [
-      { color: dotColor, alpha: 0.55 * (1 - p) },
-      { color: accent, alpha: Math.min(1, p * 3) * (1 - p) },
-    ];
-
-    layers.forEach(({ color, alpha }) => {
-      if (alpha <= 0.01) return;
-      ctx.globalAlpha = alpha;
-      ctx.fillStyle = color;
-      ctx.beginPath();
-      for (let x = startX; x <= xMax; x += GAP) {
-        for (let y = startY; y <= yMax; y += GAP) {
-          const px = cx + (x - cx) * z;
-          const py = cy + (y - cy) * z;
-          ctx.moveTo(px + r, py);
-          ctx.arc(px, py, r, 0, Math.PI * 2);
-        }
-      }
-      ctx.fill();
-    });
-    ctx.globalAlpha = 1;
+  // Cuántos caracteres se han tecleado hasta ahora
+  function typedChars(time) {
+    if (reduce || !startTime) return TOTAL;
+    return Math.max(0, Math.min(TOTAL, Math.floor((time - startTime - START_MS) / CHAR_MS)));
   }
 
   function draw(time) {
-    // Con la portada a 0×0 (pestaña oculta, iframe…) drawImage lanzaría un error
     if (!w || !h) return;
+
+    const z = tunnel.zoom;
+    const typed = z > 1.001 ? TOTAL : typedChars(time);
+    const caretOn = reduce || typed < TOTAL || Math.floor(time / BLINK_MS) % 2 === 0;
+    // Solo se vuelve a pintar si algo ha cambiado
+    const key = `${typed}|${caretOn}|${z.toFixed(4)}|${w}|${h}|${textColor}`;
+    if (key === lastKey) return;
+    lastKey = key;
+
     ctx.clearRect(0, 0, w, h);
+    if (!show) return;
+    const lh = size * 1.75;
+    const p = Math.min(1, (z - 1) / (TUNNEL_MAX - 1));
 
-    if (tunnel.zoom > 1.001) {
-      drawTunnel(tunnel.zoom);
-      return;
+    ctx.save();
+    ctx.font = `400 ${size}px 'IBM Plex Mono', ui-monospace, monospace`;
+    ctx.textBaseline = 'middle';
+    if (z > 1.001) {
+      // Túnel: todo se amplía desde la línea de "Hola mundo"
+      const fx = x0 + ctx.measureText(CODE[FOCUS_LINE]).width * 0.5;
+      const fy = y0 + FOCUS_LINE * lh;
+      ctx.translate(fx, fy);
+      ctx.scale(z, z);
+      ctx.translate(-fx, -fy);
     }
 
-    ctx.drawImage(base, 0, 0, w, h);
-    if (reduce) return;
+    // Se hace más visible al empezar el túnel y desaparece antes de que
+    // llegue la experiencia, para no cruzarse con su texto
+    const fade = Math.max(0, 1 - p / 0.35) ** 2;
+    const base = (document.documentElement.dataset.theme === 'light' ? 0.85 : 0.8) * fade;
 
-    let fx = pointer.x;
-    let fy = pointer.y;
-    if (!pointer.active) {
-      // Foco automático cuando no hay ratón encima
-      fx = w * (0.62 + 0.25 * Math.sin(time / 2600));
-      fy = h * (0.45 + 0.3 * Math.cos(time / 3400));
+    let left = typed;
+    let caretX = x0;
+    let caretY = y0;
+    for (let i = 0; i < CODE.length && left > 0; i++) {
+      const text = CODE[i].slice(0, left);
+      left -= CODE[i].length + 1;
+      const y = y0 + i * lh;
+      ctx.globalAlpha = base;
+      ctx.fillStyle = i === FOCUS_LINE && z > 1.001 ? accent : textColor;
+      ctx.fillText(text, x0, y);
+      caretX = x0 + ctx.measureText(text).width;
+      caretY = y;
     }
 
-    // Solo recorre los puntos que caen dentro del foco
-    const x0 = Math.max(GAP / 2, Math.ceil((fx - RADIUS - GAP / 2) / GAP) * GAP + GAP / 2);
-    const y0 = Math.max(GAP / 2, Math.ceil((fy - RADIUS - GAP / 2) / GAP) * GAP + GAP / 2);
-    ctx.fillStyle = accent;
-    for (let x = x0; x < Math.min(w, fx + RADIUS); x += GAP) {
-      for (let y = y0; y < Math.min(h, fy + RADIUS); y += GAP) {
-        const k = 1 - Math.hypot(x - fx, y - fy) / RADIUS;
-        if (k <= 0.05) continue;
-        ctx.globalAlpha = (0.55 + k * 0.45) * spotStrength;
-        ctx.beginPath();
-        ctx.arc(x, y, 1.4 + k * 1.4, 0, Math.PI * 2);
-        ctx.fill();
-      }
+    // Cursor del Bloc de notas
+    if (caretOn && z <= 1.001) {
+      ctx.globalAlpha = 0.9;
+      ctx.fillStyle = accent;
+      ctx.fillRect(caretX + 2, caretY - size * 0.6, Math.max(1.5, size * 0.09), size * 1.2);
     }
-    ctx.globalAlpha = 1;
+    ctx.restore();
   }
 
   function loop(time) {
     draw(time);
-    if (visible && !reduce) raf = requestAnimationFrame(loop);
+    if (visible) raf = requestAnimationFrame(loop);
   }
 
   readColors();
   resize();
   new ResizeObserver(resize).observe(hero);
 
+  // Las medidas del texto dependen de la fuente: se recalculan al cargarla
+  if (document.fonts) document.fonts.ready.then(resize);
+
   // Vuelve a leer los colores cuando cambia el tema
   new MutationObserver(() => {
     readColors();
-    paintBase();
+    lastKey = '';
     draw(performance.now());
   }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
 
   if (reduce) return;
 
-  if (finePointer) {
-    hero.addEventListener('pointermove', (e) => {
-      const r = hero.getBoundingClientRect();
-      pointer = { x: e.clientX - r.left, y: e.clientY - r.top, active: true };
-    });
-    hero.addEventListener('pointerleave', () => {
-      pointer.active = false;
-    });
-  }
+  startTime = performance.now();
 
   // Solo anima mientras la portada está en pantalla
   new IntersectionObserver(([entry]) => {

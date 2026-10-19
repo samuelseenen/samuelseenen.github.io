@@ -69,15 +69,15 @@
       // Solo con ratón: en tablets táctiles el scroll fijado se nota brusco
       if (desktop && fine) {
         // Túnel: la portada y la experiencia quedan fijadas a la vez, una encima
-        // de la otra. Mientras la rejilla se convierte en un túnel y la portada
+        // de la otra. Mientras la cámara entra en el código del fondo y la portada
         // pasa a través de la cámara, la experiencia aparece desde el fondo
         // (pequeña en el centro) hasta ocupar su sitio. Al terminar, se sigue
         // bajando con normalidad desde la experiencia.
         const hero = document.querySelector('.hero');
         const exp = document.getElementById('experiencia');
         const expGrid = exp.querySelector('.exp-grid');
-        // El túnel dura el 60% de la altura de la portada
-        const tunnelLength = () => '+=' + Math.round(hero.offsetHeight * 0.6);
+        // El túnel dura el 40% de la altura de la portada
+        const tunnelLength = () => '+=' + Math.round(hero.offsetHeight * 0.4);
 
         // La experiencia se coloca justo encima de la portada (ver .tunnel en styles.css)
         root.classList.add('tunnel');
@@ -89,7 +89,7 @@
           })
           // Primera mitad: la portada pasa a través de la cámara y desaparece
           .to('.hero-copy', { scale: 1.35, autoAlpha: 0, transformOrigin: '30% 50%', ease: 'power1.in', duration: 0.4 }, 0)
-          .to('.demo', { scale: 1.7, autoAlpha: 0, ease: 'power1.in', duration: 0.4 }, 0.05)
+          .to('.notepad figcaption', { autoAlpha: 0, ease: 'power1.in', duration: 0.2 }, 0)
           // Todo el recorrido: avanzamos por el túnel
           .to(window.heroTunnel, { zoom: 7, ease: 'power1.in', duration: 1 }, 0);
 
@@ -101,7 +101,7 @@
           // Mientras dura el túnel la sección es transparente y deja ver la portada
           root.classList.toggle('tunnel-active', progress < 1);
           // Segunda mitad: la experiencia llega desde el fondo
-          const e = gsap.utils.clamp(0, 1, (progress - 0.45) / 0.55);
+          const e = gsap.utils.clamp(0, 1, (progress - 0.4) / 0.6);
           gsap.set(expGrid, {
             scale: 0.3 + 0.7 * easeOut(e),
             autoAlpha: e,
@@ -234,43 +234,6 @@
         onLeaveBack: () => root.classList.remove('nav-hidden'),
       });
 
-      if (!fine) return cleanup;
-
-      // Brillo de las tarjetas siguiendo al cursor
-      const spots = gsap.utils.toArray('.spot');
-      const onSpotMove = (e) => {
-        const r = e.currentTarget.getBoundingClientRect();
-        e.currentTarget.style.setProperty('--mx', `${e.clientX - r.left}px`);
-        e.currentTarget.style.setProperty('--my', `${e.clientY - r.top}px`);
-      };
-      spots.forEach((el) => el.addEventListener('pointermove', onSpotMove));
-
-      // Botones magnéticos: se desplazan un poco hacia el cursor
-      const magnets = gsap.utils.toArray('.magnetic').map((el) => {
-        const xTo = gsap.quickTo(el, 'x', { duration: 0.6, ease: 'elastic.out(1, 0.4)' });
-        const yTo = gsap.quickTo(el, 'y', { duration: 0.6, ease: 'elastic.out(1, 0.4)' });
-        const move = (e) => {
-          const r = el.getBoundingClientRect();
-          xTo((e.clientX - (r.left + r.width / 2)) * 0.3);
-          yTo((e.clientY - (r.top + r.height / 2)) * 0.4);
-        };
-        const leave = () => {
-          xTo(0);
-          yTo(0);
-        };
-        el.addEventListener('pointermove', move);
-        el.addEventListener('pointerleave', leave);
-        return { el, move, leave };
-      });
-
-      // Limpieza si cambian las preferencias del sistema
-      cleanups.push(() => {
-        spots.forEach((el) => el.removeEventListener('pointermove', onSpotMove));
-        magnets.forEach(({ el, move, leave }) => {
-          el.removeEventListener('pointermove', move);
-          el.removeEventListener('pointerleave', leave);
-        });
-      });
       return cleanup;
     },
   );

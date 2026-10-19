@@ -14,7 +14,8 @@
   const scrub = demo.querySelector('.scrub');
   const time = demo.querySelector('.time');
 
-  const tl = gsap.timeline({ delay: 1.3, onUpdate: update, onComplete: update });
+  // Empieza en pausa y se reproduce la primera vez que aparece en pantalla
+  const tl = gsap.timeline({ paused: true, onUpdate: update, onComplete: update });
 
   tl.set(q('.f, .end > *'), { autoAlpha: 0 })
     // Frame 1
@@ -66,11 +67,21 @@
 
   // Al cambiar de idioma se actualiza la etiqueta del botón
   document.addEventListener('langchange', () => setState(toggle.dataset.state || 'playing', true));
-  setState('playing', true);
+  setState('paused', true);
 
   // Con movimiento reducido se muestra directamente el frame final
   if (matchMedia('(prefers-reduced-motion: reduce)').matches) {
     tl.progress(1).pause();
     update();
+  } else {
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) return;
+        io.disconnect();
+        if (tl.progress() === 0 && !tl.isActive()) tl.play();
+      },
+      { threshold: 0.5 },
+    );
+    io.observe(demo);
   }
 })();

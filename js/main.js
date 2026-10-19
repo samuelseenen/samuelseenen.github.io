@@ -58,6 +58,10 @@
       el.setAttribute('aria-label', site.t(el.dataset.i18nAria));
     });
 
+    document.querySelectorAll('[data-i18n-alt]').forEach((el) => {
+      el.setAttribute('alt', site.t(el.dataset.i18nAlt));
+    });
+
     document.title = site.t('meta.title');
     document.querySelector('meta[name="description"]').setAttribute('content', site.t('meta.description'));
 
@@ -111,6 +115,24 @@
         { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
         { duration: 650, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', pseudoElement: '::view-transition-new(root)' },
       );
+    });
+  });
+
+  /* ---------- Capturas del proyecto destacado ----------
+     Cada miniatura muestra su captura en la imagen grande */
+  const shotMain = document.querySelector('.shot-main');
+  const thumbs = document.querySelectorAll('.thumb');
+
+  thumbs.forEach((thumb) => {
+    thumb.addEventListener('click', () => {
+      shotMain.src = thumb.dataset.src;
+      shotMain.dataset.i18nAlt = thumb.dataset.altKey;
+      shotMain.alt = site.t(thumb.dataset.altKey);
+      thumbs.forEach((t) => {
+        const current = t === thumb;
+        t.classList.toggle('is-current', current);
+        t.setAttribute('aria-pressed', String(current));
+      });
     });
   });
 
