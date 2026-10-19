@@ -4,7 +4,7 @@ Este es mi portfolio personal. Soy desarrollador full-stack junior y aquí recoj
 
 Lo he hecho con HTML, CSS y JavaScript, sin frameworks, para tener control total sobre el peso de la página y las animaciones.
 
-Puedes verlo en **[samuelseenen.github.io](https://samuelseenen.github.io)**.
+Puedes verlo en **[samuelsenen.dev](https://samuelsenen.dev)**.
 
 ## Características
 
@@ -35,6 +35,7 @@ js/hero-canvas.js   Rejilla de puntos interactiva
 js/animations.js    Animaciones de scroll
 assets/             CV, favicon, icono para iOS e imagen para redes sociales
 assets/fonts/       Tipografías
+CNAME               Dominio propio (samuelsenen.dev) para GitHub Pages
 ```
 
 ## Publicar cambios
@@ -44,4 +45,4 @@ La web está publicada en GitHub Pages. Cuando modifico el CSS o el JavaScript, 
 ## Contacto
 
 **Samuel Senén López**
-[Web](https://samuelseenen.github.io) · [LinkedIn](https://www.linkedin.com/in/samuel-senen-673502163) · [GitHub](https://github.com/samuelseenen) · samuelsenen@gmail.com
+[Web](https://samuelsenen.dev) · [LinkedIn](https://www.linkedin.com/in/samuel-senen-673502163) · [GitHub](https://github.com/samuelseenen) · samuelsenen@gmail.com
