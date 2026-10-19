@@ -1,0 +1,517 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Samuel Senén López | Desarrollador Full-Stack</title>
+    <meta name="description" content="Portfolio de Samuel Senén López, desarrollador full-stack junior en Guadalajara, España. HTML5, CSS, JavaScript, GSAP, PHP y MySQL." />
+    <meta name="theme-color" content="#0d0f12" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Samuel Senén López | Desarrollador Full-Stack" />
+    <meta property="og:description" content="Desarrollador full-stack junior. HTML5, CSS, JavaScript, GSAP, PHP y MySQL." />
+    <meta property="og:site_name" content="Samuel Senén López" />
+    <meta property="og:locale" content="es_ES" />
+    <meta property="og:locale:alternate" content="en_GB" />
+    <!-- Dirección pública del sitio (GitHub Pages). Si cambia, actualizar estas tres URL -->
+    <link rel="canonical" href="https://samuelseenen.github.io/" />
+    <meta property="og:url" content="https://samuelseenen.github.io/" />
+    <meta property="og:image" content="https://samuelseenen.github.io/assets/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Samuel Senén López, desarrollador full-stack junior" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="assets/favicon.svg" />
+    <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+
+    <!-- Datos estructurados para buscadores -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "Person",
+        "name": "Samuel Senén López",
+        "jobTitle": "Desarrollador Full-Stack",
+        "email": "mailto:samuelsenen@gmail.com",
+        "address": { "@type": "PostalAddress", "addressLocality": "Guadalajara", "addressCountry": "ES" },
+        "knowsAbout": ["HTML5", "CSS", "JavaScript", "GSAP", "PHP", "MySQL", "WordPress"],
+        "url": "https://samuelseenen.github.io/",
+        "sameAs": ["https://www.linkedin.com/in/samuel-senen-673502163", "https://github.com/samuelseenen"]
+      }
+    </script>
+
+    <!-- Tipografías alojadas en el propio sitio: Geist (texto y títulos) y Geist Mono (detalles técnicos) -->
+    <link rel="preload" href="assets/fonts/geist.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="assets/fonts/geist-mono.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="stylesheet" href="css/styles.css" />
+
+    <!-- Se ejecuta antes de pintar la página para evitar parpadeos de tema e idioma -->
+    <script>
+      (function () {
+        var root = document.documentElement;
+        root.classList.add('js');
+
+        var theme = null;
+        var lang = null;
+        try {
+          theme = localStorage.getItem('theme');
+          lang = localStorage.getItem('lang');
+        } catch (e) {}
+
+        theme = theme || (matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+        root.dataset.theme = theme;
+        document.querySelector('meta[name="theme-color"]').setAttribute('content', theme === 'light' ? '#f3f4f6' : '#0d0f12');
+
+        lang = lang || (navigator.language.toLowerCase().indexOf('es') === 0 ? 'es' : 'en');
+        if (lang !== 'es') {
+          root.lang = lang;
+          root.classList.add('i18n-pending'); // main.js lo quita al traducir
+          // Por si main.js falla o tarda: la página nunca se queda oculta más de 2 s
+          setTimeout(function () {
+            root.classList.remove('i18n-pending');
+          }, 2000);
+        }
+      })();
+    </script>
+    <style>
+      .i18n-pending body {
+        visibility: hidden;
+      }
+    </style>
+
+    <!-- Textos e idioma primero, para no esperar a GSAP antes de mostrar la página -->
+    <script defer src="js/i18n.js"></script>
+    <script defer src="js/main.js"></script>
+
+    <!-- GSAP (animaciones) desde CDN, con comprobación de integridad -->
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/gsap.min.js"
+      integrity="sha384-HOvlOYPIs/zjoIkWUGXkVmXsjr8GuZLV+Q+rcPwmJOVZVpvTSXQChiN4t9Euv9Vc"
+      crossorigin="anonymous"
+    ></script>
+    <script
+      defer
+      src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.13.0/ScrollTrigger.min.js"
+      integrity="sha384-P8VzCVnT9NBUkMrpcIZrJbA7EBjJvh/fJS6PmP+4nLIM284DtsImIv8D0fFjIkeh"
+      crossorigin="anonymous"
+    ></script>
+
+    <!-- Scripts que usan GSAP (el orden importa) -->
+    <script defer src="js/banner.js"></script>
+    <script defer src="js/hero-canvas.js"></script>
+    <script defer src="js/animations.js"></script>
+  </head>
+
+  <body>
+    <!-- Iconos (Phosphor Icons). Se usan con <svg><use href="#i-nombre"></use></svg> -->
+    <svg width="0" height="0" style="position: absolute" aria-hidden="true">
+      <symbol id="i-arrow-right" viewBox="0 0 256 256"><path d="M221.66,133.66l-72,72a8,8,0,0,1-11.32-11.32L196.69,136H40a8,8,0,0,1,0-16H196.69L138.34,61.66a8,8,0,0,1,11.32-11.32l72,72A8,8,0,0,1,221.66,133.66Z"/></symbol>
+      <symbol id="i-arrow-up-right" viewBox="0 0 256 256"><path d="M200,64V168a8,8,0,0,1-16,0V83.31L69.66,197.66a8,8,0,0,1-11.32-11.32L172.69,72H88a8,8,0,0,1,0-16H192A8,8,0,0,1,200,64Z"/></symbol>
+      <symbol id="i-download" viewBox="0 0 256 256"><path d="M224,144v64a8,8,0,0,1-8,8H40a8,8,0,0,1-8-8V144a8,8,0,0,1,16,0v56H208V144a8,8,0,0,1,16,0Zm-101.66,5.66a8,8,0,0,0,11.32,0l40-40a8,8,0,0,0-11.32-11.32L136,124.69V32a8,8,0,0,0-16,0v92.69L93.66,98.34a8,8,0,0,0-11.32,11.32Z"/></symbol>
+      <symbol id="i-sun" viewBox="0 0 256 256"><path d="M120,40V16a8,8,0,0,1,16,0V40a8,8,0,0,1-16,0Zm72,88a64,64,0,1,1-64-64A64.07,64.07,0,0,1,192,128Zm-16,0a48,48,0,1,0-48,48A48.05,48.05,0,0,0,176,128ZM58.34,69.66A8,8,0,0,0,69.66,58.34l-16-16A8,8,0,0,0,42.34,53.66Zm0,116.68-16,16a8,8,0,0,0,11.32,11.32l16-16a8,8,0,0,0-11.32-11.32ZM192,72a8,8,0,0,0,5.66-2.34l16-16a8,8,0,0,0-11.32-11.32l-16,16A8,8,0,0,0,192,72Zm5.66,114.34a8,8,0,0,0-11.32,11.32l16,16a8,8,0,0,0,11.32-11.32ZM48,128a8,8,0,0,0-8-8H16a8,8,0,0,0,0,16H40A8,8,0,0,0,48,128Zm80,80a8,8,0,0,0-8,8v24a8,8,0,0,0,16,0V216A8,8,0,0,0,128,208Zm112-88H216a8,8,0,0,0,0,16h24a8,8,0,0,0,0-16Z"/></symbol>
+      <symbol id="i-moon" viewBox="0 0 256 256"><path d="M233.54,142.23a8,8,0,0,0-8-2,88.08,88.08,0,0,1-109.8-109.8,8,8,0,0,0-10-10,104.84,104.84,0,0,0-52.91,37A104,104,0,0,0,136,224a103.09,103.09,0,0,0,62.52-20.88,104.84,104.84,0,0,0,37-52.91A8,8,0,0,0,233.54,142.23ZM188.9,190.34A88,88,0,0,1,65.66,67.11a89,89,0,0,1,31.4-26A106,106,0,0,0,96,56,104.11,104.11,0,0,0,200,160a106,106,0,0,0,14.92-1.06A89,89,0,0,1,188.9,190.34Z"/></symbol>
+      <symbol id="i-copy" viewBox="0 0 256 256"><path d="M216,32H88a8,8,0,0,0-8,8V80H40a8,8,0,0,0-8,8V216a8,8,0,0,0,8,8H168a8,8,0,0,0,8-8V176h40a8,8,0,0,0,8-8V40A8,8,0,0,0,216,32ZM160,208H48V96H160Zm48-48H176V88a8,8,0,0,0-8-8H96V48H208Z"/></symbol>
+      <symbol id="i-check" viewBox="0 0 256 256"><path d="M229.66,77.66l-128,128a8,8,0,0,1-11.32,0l-56-56a8,8,0,0,1,11.32-11.32L96,188.69,218.34,66.34a8,8,0,0,1,11.32,11.32Z"/></symbol>
+      <symbol id="i-linkedin" viewBox="0 0 256 256"><path d="M216,24H40A16,16,0,0,0,24,40V216a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V40A16,16,0,0,0,216,24Zm0,192H40V40H216V216ZM96,112v64a8,8,0,0,1-16,0V112a8,8,0,0,1,16,0Zm88,28v36a8,8,0,0,1-16,0V140a20,20,0,0,0-40,0v36a8,8,0,0,1-16,0V112a8,8,0,0,1,15.79-1.78A36,36,0,0,1,184,140ZM100,84A12,12,0,1,1,88,72,12,12,0,0,1,100,84Z"/></symbol>
+      <symbol id="i-github" viewBox="0 0 256 256"><path d="M208.31,75.68A59.78,59.78,0,0,0,202.93,28,8,8,0,0,0,196,24a59.75,59.75,0,0,0-48,24H124A59.75,59.75,0,0,0,76,24a8,8,0,0,0-6.93,4,59.780,59.78,0,0,0-5.38,47.68A58.14,58.14,0,0,0,56,104v8a56.060,56.06,0,0,0,48.440,55.47A39.8,39.8,0,0,0,96,192v8H72a24,24,0,0,1-24-24A40,40,0,0,0,8,136a8,8,0,0,0,0,16,24,24,0,0,1,24,24,40,40,0,0,0,40,40H96v16a8,8,0,0,0,16,0V192a24,24,0,0,1,48,0v40a8,8,0,0,0,16,0V192a39.8,39.8,0,0,0-8.44-24.53A56.06,56.06,0,0,0,216,112v-8A58.14,58.14,0,0,0,208.31,75.68ZM200,112a40,40,0,0,1-40,40H112a40,40,0,0,1-40-40v-8a41.74,41.74,0,0,1,6.9-22.48A8,8,0,0,0,80,73.83a43.81,43.81,0,0,1,.79-33.58,43.88,43.88,0,0,1,32.32,20.06A8,8,0,0,0,119.820,64h32.35a8,8,0,0,0,6.74-3.69,43.87,43.87,0,0,1,32.32-20.06A43.81,43.81,0,0,1,192,73.83a8.09,8.09,0,0,0,1,7.65A41.72,41.72,0,0,1,200,104Z"/></symbol>
+      <symbol id="i-qr" viewBox="0 0 256 256"><path d="M104,40H56A16,16,0,0,0,40,56v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,104,40Zm0,64H56V56h48v48Zm0,32H56a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V152A16,16,0,0,0,104,136Zm0,64H56V152h48v48ZM200,40H152a16,16,0,0,0-16,16v48a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Zm0,64H152V56h48v48Zm-64,72V144a8,8,0,0,1,16,0v32a8,8,0,0,1-16,0Zm80-16a8,8,0,0,1-8,8H184v40a8,8,0,0,1-8,8H144a8,8,0,0,1,0-16h24V144a8,8,0,0,1,16,0v8h24A8,8,0,0,1,216,160Zm0,32v16a8,8,0,0,1-16,0V192a8,8,0,0,1,16,0Z"/></symbol>
+      <symbol id="i-browsers" viewBox="0 0 256 256"><path d="M216,40H72A16,16,0,0,0,56,56V72H40A16,16,0,0,0,24,88V200a16,16,0,0,0,16,16H184a16,16,0,0,0,16-16V184h16a16,16,0,0,0,16-16V56A16,16,0,0,0,216,40ZM184,88v16H40V88Zm0,112H40V120H184v80Zm32-32H200V88a16,16,0,0,0-16-16H72V56H216Z"/></symbol>
+      <symbol id="i-envelope-open" viewBox="0 0 256 256"><path d="M228.44,89.34l-96-64a8,8,0,0,0-8.88,0l-96,64A8,8,0,0,0,24,96V200a16,16,0,0,0,16,16H216a16,16,0,0,0,16-16V96A8,8,0,0,0,228.44,89.34ZM96.72,152,40,192V111.53Zm16.37,8h29.82l56.63,40H56.46Zm46.19-8L216,111.53V192ZM128,41.61l81.910,54.61-67,47.78H113.11l-67-47.78Z"/></symbol>
+      <symbol id="i-code" viewBox="0 0 256 256"><path d="M58.34,101.66l-32-32a8,8,0,0,1,0-11.32l32-32A8,8,0,0,1,69.66,37.66L43.31,64,69.66,90.34a8,8,0,0,1-11.32,11.32Zm40,0a8,8,0,0,0,11.32,0l32-32a8,8,0,0,0,0-11.32l-32-32A8,8,0,0,0,98.34,37.66L124.69,64,98.34,90.34A8,8,0,0,0,98.34,101.66ZM200,40H176a8,8,0,0,0,0,16h24V200H56V136a8,8,0,0,0-16,0v64a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V56A16,16,0,0,0,200,40Z"/></symbol>
+      <symbol id="i-play" viewBox="0 0 256 256"><path d="M232.4,114.49,88.32,26.35a16,16,0,0,0-16.2-.3A15.86,15.86,0,0,0,64,39.87V216.13A15.94,15.94,0,0,0,80,232a16.07,16.07,0,0,0,8.36-2.35L232.4,141.51a15.81,15.81,0,0,0,0-27ZM80,215.94V40l143.830,88Z"/></symbol>
+      <symbol id="i-pause" viewBox="0 0 256 256"><path d="M200,32H160a16,16,0,0,0-16,16V208a16,16,0,0,0,16,16h40a16,16,0,0,0,16-16V48A16,16,0,0,0,200,32Zm0,176H160V48h40ZM96,32H56A16,16,0,0,0,40,48V208a16,16,0,0,0,16,16H96a16,16,0,0,0,16-16V48A16,16,0,0,0,96,32Zm0,176H56V48H96Z"/></symbol>
+      <symbol id="i-replay" viewBox="0 0 256 256"><path d="M224,128a96,96,0,0,1-94.71,96H128A95.38,95.38,0,0,1,62.1,197.8a8,8,0,0,1,11-11.63A80,80,0,1,0,71.43,71.39a3.070,3.07,0,0,1-.26.25L44.59,96H72a8,8,0,0,1,0,16H24a8,8,0,0,1-8-8V56a8,8,0,0,1,16,0V85.8L60.25,60A96,96,0,0,1,224,128Z"/></symbol>
+      <symbol id="i-arrow-up" viewBox="0 0 256 256"><path d="M205.66,117.66a8,8,0,0,1-11.32,0L136,59.31V216a8,8,0,0,1-16,0V59.31L61.66,117.66a8,8,0,0,1-11.32-11.32l72-72a8,8,0,0,1,11.32,0l72,72A8,8,0,0,1,205.66,117.66Z"/></symbol>
+      <symbol id="i-map-pin" viewBox="0 0 256 256"><path d="M128,64a40,40,0,1,0,40,40A40,40,0,0,0,128,64Zm0,64a24,24,0,1,1,24-24A24,24,0,0,1,128,128Zm0-112a88.1,88.1,0,0,0-88,88c0,31.4,14.51,64.68,42,96.25a254.19,254.19,0,0,0,41.45,38.3,8,8,0,0,0,9.18,0A254.19,254.19,0,0,0,174,200.25c27.45-31.57,42-64.85,42-96.25A88.1,88.1,0,0,0,128,16Zm0,206c-16.53-13-72-60.75-72-118a72,72,0,0,1,144,0C200,161.23,144.53,209,128,222Z"/></symbol>
+    </svg>
+
+    <a class="skip-link" href="#main" data-i18n="nav.skip">Saltar al contenido</a>
+
+    <!-- ================= NAVEGACIÓN ================= -->
+    <header class="nav">
+      <div class="container nav-inner">
+        <a class="logo" href="#main" aria-label="Samuel Senén López">
+          <span aria-hidden="true">&lt;</span>SSL<span aria-hidden="true">/&gt;</span>
+        </a>
+
+        <nav class="links" id="nav-links" data-i18n-aria="nav.label" aria-label="Principal">
+          <a href="#experiencia" data-section="experiencia" data-i18n="nav.experience">Experiencia</a>
+          <a href="#trabajo" data-section="trabajo" data-i18n="nav.work">Trabajo</a>
+          <a href="#stack" data-section="stack" data-i18n="nav.stack">Stack</a>
+          <a href="#contacto" data-section="contacto" data-i18n="nav.contact">Contacto</a>
+        </nav>
+
+        <div class="actions">
+          <button class="lang" type="button" data-i18n-aria="nav.switchLang" aria-label="Switch to English">
+            <span data-lang="es">ES</span>
+            <span class="sep" aria-hidden="true">/</span>
+            <span data-lang="en">EN</span>
+          </button>
+          <button class="icon-btn theme-toggle" type="button" aria-label="Activar modo claro">
+            <svg class="icon icon-md i-sun" aria-hidden="true"><use href="#i-sun"></use></svg>
+            <svg class="icon icon-md i-moon" aria-hidden="true"><use href="#i-moon"></use></svg>
+          </button>
+          <!-- Solo en móvil: abre y cierra el menú (main.js) -->
+          <button class="menu-btn" type="button" aria-expanded="false" aria-controls="nav-links">
+            <span class="menu-open" data-i18n="nav.menu">Menú</span>
+            <span class="menu-close" data-i18n="nav.close">Cerrar</span>
+          </button>
+        </div>
+      </div>
+      <span class="progress" aria-hidden="true"></span>
+    </header>
+
+    <main id="main">
+      <!-- ================= PORTADA ================= -->
+      <section class="hero">
+        <canvas class="hero-canvas" aria-hidden="true"></canvas>
+
+        <div class="container hero-grid">
+          <div class="hero-copy">
+            <p class="role mono" data-hero>
+              <span class="status"><span class="status-dot" aria-hidden="true"></span><span data-i18n="hero.status">Disponible</span></span>
+              <span data-i18n="hero.role">Desarrollador Full-Stack Jr</span>
+            </p>
+            <h1 class="hero-title split" data-split="chars">Samuel Senén López</h1>
+            <p class="lead" data-hero data-i18n="hero.lead">
+              Interfaces animadas, ligeras y compatibles con cualquier pantalla, con PHP y MySQL por detrás.
+            </p>
+            <div class="ctas" data-hero>
+              <a class="btn btn-primary magnetic" href="#contacto">
+                <span data-i18n="hero.ctaPrimary">Contactar</span>
+                <svg class="icon icon-md" aria-hidden="true"><use href="#i-arrow-right"></use></svg>
+              </a>
+              <a class="btn btn-ghost magnetic" href="assets/cv-samuel-senen.pdf" download>
+                <svg class="icon icon-md" aria-hidden="true"><use href="#i-download"></use></svg>
+                <span data-i18n="hero.ctaSecondary">Descargar CV</span>
+              </a>
+            </div>
+          </div>
+
+          <!-- Banner 300x250 animado con GSAP (js/banner.js) -->
+          <div class="visual" data-hero>
+            <figure class="demo">
+              <div class="frame">
+                <span class="size mono" aria-hidden="true">300×250</span>
+                <div class="banner" role="img" data-i18n-aria="banner.label" aria-label="Cada KB cuenta. Cada frame, también.">
+                  <span class="shape s1" aria-hidden="true"></span>
+                  <span class="shape s2" aria-hidden="true"></span>
+                  <span class="shape s3" aria-hidden="true"></span>
+
+                  <p class="f f1" data-i18n="banner.f1">Cada KB cuenta.</p>
+                  <p class="f f2" data-i18n="banner.f2">Cada frame, también.</p>
+
+                  <div class="end">
+                    <p class="end-logo mono">&lt;SSL/&gt;</p>
+                    <p class="end-text" data-i18n="banner.f3">Banners HTML5 que cargan rápido y se ven bien en todas partes.</p>
+                    <a class="end-cta" href="#experiencia" tabindex="-1" data-i18n="banner.cta">Ver experiencia</a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="controls">
+                <button class="icon-btn b-toggle" type="button" aria-label="Pausar">
+                  <svg class="icon icon-sm i-pause" aria-hidden="true"><use href="#i-pause"></use></svg>
+                  <svg class="icon icon-sm i-play" aria-hidden="true"><use href="#i-play"></use></svg>
+                </button>
+                <button class="icon-btn b-replay" type="button" data-i18n-aria="banner.replay" aria-label="Repetir">
+                  <svg class="icon icon-sm" aria-hidden="true"><use href="#i-replay"></use></svg>
+                </button>
+                <input class="scrub" type="range" min="0" max="1000" value="0" data-i18n-aria="banner.scrub" aria-label="Línea de tiempo del banner" />
+                <output class="time mono" aria-hidden="true">0.0s</output>
+              </div>
+
+              <figcaption data-i18n="banner.caption">
+                Banner 300×250 animado con GSAP, en directo. Arrastra para recorrer la línea de tiempo.
+              </figcaption>
+            </figure>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= EXPERIENCIA ================= -->
+      <section id="experiencia" class="section">
+        <div class="container exp-grid">
+          <div class="exp-head">
+            <h2 class="section-title split" data-split="words" data-i18n="exp.title">Experiencia</h2>
+            <p class="section-intro reveal" style="--i: 1" data-i18n="exp.intro">
+              Más de dos años desarrollando para publicidad digital y aplicaciones web.
+            </p>
+          </div>
+
+          <div class="timeline">
+            <span class="rail" aria-hidden="true"><span class="rail-fill"></span></span>
+            <ol>
+              <li class="job reveal">
+                <span class="node" aria-hidden="true"></span>
+                <p class="dates mono">
+                  <span data-i18n="exp1.dates">Feb 2026 -</span>
+                  <span class="now" data-i18n="exp.now">Actualidad</span>
+                </p>
+                <div>
+                  <h3><span data-i18n="exp1.role">Front-End Developer</span> <span class="at">@ WPP Production</span></h3>
+                  <p class="city">Madrid</p>
+                  <ul class="points">
+                    <li data-i18n="exp1.p1">Creatividades interactivas HTML5 con JavaScript, CSS3 y GSAP para campañas internacionales.</li>
+                    <li data-i18n="exp1.p2">Animación e interactividad optimizando peso y rendimiento según las especificaciones de cada plataforma.</li>
+                    <li data-i18n="exp1.p3">Compatibilidad entre navegadores, dispositivos y múltiples formatos y resoluciones.</li>
+                  </ul>
+                  <ul class="tags" data-i18n-aria="exp.tags" aria-label="Tecnologías">
+                    <li class="tag">HTML5</li>
+                    <li class="tag">GSAP</li>
+                    <li class="tag">JavaScript</li>
+                    <li class="tag">CSS3</li>
+                  </ul>
+                </div>
+              </li>
+
+              <li class="job reveal" style="--i: 1">
+                <span class="node" aria-hidden="true"></span>
+                <p class="dates mono" data-i18n="exp2.dates">Ene 2025 - Feb 2026</p>
+                <div>
+                  <h3><span data-i18n="exp2.role">Front-End Developer</span> <span class="at">@ Hogarth</span></h3>
+                  <p class="city">Madrid</p>
+                  <ul class="points">
+                    <li data-i18n="exp2.p1">Desarrollo y mantenimiento de banners publicitarios con HTML5, CSS3 y JavaScript.</li>
+                    <li data-i18n="exp2.p2">Emails responsive compatibles con los principales clientes de correo.</li>
+                    <li data-i18n="exp2.p3">Control de calidad de creatividades junto a equipos multidisciplinares.</li>
+                  </ul>
+                  <ul class="tags" data-i18n-aria="exp.tags" aria-label="Tecnologías">
+                    <li class="tag">HTML5</li>
+                    <li class="tag">Email</li>
+                    <li class="tag">JavaScript</li>
+                    <li class="tag">QA</li>
+                  </ul>
+                </div>
+              </li>
+
+              <li class="job reveal" style="--i: 2">
+                <span class="node" aria-hidden="true"></span>
+                <p class="dates mono" data-i18n="exp3.dates">Oct 2023 - Ene 2024</p>
+                <div>
+                  <h3><span data-i18n="exp3.role">Becario de desarrollo web</span> <span class="at">@ Futura Vive</span></h3>
+                  <p class="city">Madrid</p>
+                  <ul class="points">
+                    <li data-i18n="exp3.p1">Aplicaciones web y templates de WordPress a medida con PHP, JavaScript, Bootstrap y MySQL.</li>
+                    <li data-i18n="exp3.p2">Sistema de acceso por códigos QR para instalaciones municipales, de la interfaz a la base de datos.</li>
+                  </ul>
+                  <ul class="tags" data-i18n-aria="exp.tags" aria-label="Tecnologías">
+                    <li class="tag">PHP</li>
+                    <li class="tag">MySQL</li>
+                    <li class="tag">WordPress</li>
+                    <li class="tag">Bootstrap</li>
+                  </ul>
+                </div>
+              </li>
+            </ol>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= LO QUE HE CONSTRUIDO ================= -->
+      <section id="trabajo" class="section work">
+        <div class="container">
+          <h2 class="section-title split" data-split="words" data-i18n="work.title">Lo que he construido</h2>
+
+          <div class="bento">
+            <!-- Fila 1: sistema QR (ancha) y emails -->
+            <article class="cell spot qr">
+              <div>
+                <svg class="icon icon-lg" aria-hidden="true"><use href="#i-qr"></use></svg>
+                <h3 data-i18n="work.qr.title">Acceso por códigos QR</h3>
+                <p data-i18n="work.qr.body">Sistema de acceso para instalaciones municipales: frontend, lógica de servidor en PHP y base de datos MySQL.</p>
+              </div>
+              <!-- Recorrido de una petición; animations.js va encendiendo cada paso -->
+              <ol class="flow mono" aria-hidden="true">
+                <li>UI</li>
+                <li>PHP</li>
+                <li>MySQL</li>
+              </ol>
+            </article>
+
+            <article class="cell spot emails">
+              <svg class="icon icon-lg" aria-hidden="true"><use href="#i-envelope-open"></use></svg>
+              <h3 data-i18n="work.emails.title">Emails responsive</h3>
+              <p data-i18n="work.emails.body">Plantillas que se ven bien en Gmail, Outlook y móvil, con el HTML que cada cliente de correo acepta.</p>
+            </article>
+
+            <!-- Fila 2: WordPress (ancha) y banners -->
+            <article class="cell spot wordpress">
+              <div>
+                <svg class="icon icon-lg" aria-hidden="true"><use href="#i-code"></use></svg>
+                <h3 data-i18n="work.wp.title">Templates WordPress a medida</h3>
+                <p data-i18n="work.wp.body">Temas y aplicaciones web personalizadas para distintos clientes con PHP, JavaScript, Bootstrap y MySQL.</p>
+              </div>
+              <pre class="snippet mono" aria-hidden="true"><code><span class="ln"><span class="c">&lt;?php</span> get_header();</span><span class="ln"><span class="k">while</span> ( have_posts() ) :</span><span class="ln">  the_post();</span><span class="ln">  the_content();</span><span class="ln"><span class="k">endwhile</span>;</span><span class="ln">get_footer(); <span class="c">?&gt;</span></span></code></pre>
+            </article>
+
+            <article class="cell spot banners">
+              <svg class="icon icon-lg" aria-hidden="true"><use href="#i-browsers"></use></svg>
+              <h3 data-i18n="work.banners.title">Creatividades HTML5 interactivas</h3>
+              <p data-i18n="work.banners.body">
+                Banners animados con GSAP para campañas internacionales, adaptados a cada formato y optimizados en peso según la plataforma.
+              </p>
+              <!-- Formatos de banner dibujados a escala -->
+              <div class="formats" role="img" data-i18n-aria="work.formats" aria-label="Formatos habituales: 160×600, 728×90, 300×250, 320×50">
+                <span class="fmt f-160x600">160×600</span>
+                <div class="stack-col">
+                  <span class="fmt f-728x90">728×90</span>
+                  <span class="fmt f-300x250">300×250</span>
+                  <span class="fmt f-320x50">320×50</span>
+                </div>
+              </div>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= STACK ================= -->
+      <section id="stack" class="section">
+        <div class="container">
+          <h2 class="section-title split" data-split="words" data-i18n="stack.title">Stack</h2>
+
+          <div class="groups">
+            <div class="group">
+              <h3 data-i18n="stack.frontend">Frontend</h3>
+              <ul>
+                <li>HTML5</li>
+                <li>CSS3</li>
+                <li>JavaScript</li>
+                <li>GSAP</li>
+                <li>Bootstrap</li>
+              </ul>
+            </div>
+            <div class="group">
+              <h3 data-i18n="stack.backend">Backend y datos</h3>
+              <ul>
+                <li>PHP</li>
+                <li>MySQL</li>
+                <li>REST APIs</li>
+                <li>WordPress</li>
+              </ul>
+            </div>
+            <div class="group learning">
+              <h3 data-i18n="stack.learning">Aprendiendo</h3>
+              <ul>
+                <li>Node.js</li>
+                <li>Angular</li>
+              </ul>
+            </div>
+            <div class="group">
+              <h3 data-i18n="stack.tools">Herramientas</h3>
+              <ul>
+                <li>Git</li>
+                <li data-i18n="stack.banners">Banners HTML5</li>
+                <li data-i18n="stack.emails">Emails responsive</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= FORMACIÓN E IDIOMAS ================= -->
+      <section class="section about">
+        <div class="container">
+          <div class="edu">
+            <div class="reveal">
+              <h2 class="title" data-i18n="edu.title">Formación</h2>
+              <ul class="edu-list">
+                <li>
+                  <p class="years mono">2021 - 2024</p>
+                  <p class="edu-title" data-i18n="edu.dam">CFGS Desarrollo de Aplicaciones Web</p>
+                  <p class="school">IES Arcipreste de Hita</p>
+                </li>
+                <li>
+                  <p class="years mono">2018 - 2020</p>
+                  <p class="edu-title" data-i18n="edu.bach">Bachillerato de Ciencias</p>
+                  <p class="school">IES Carmen Burgos de Seguí</p>
+                </li>
+              </ul>
+            </div>
+
+            <div class="reveal" style="--i: 1">
+              <h2 class="title" data-i18n="edu.languages">Idiomas</h2>
+              <ul class="langs">
+                <li>
+                  <span data-i18n="edu.spanish">Español</span>
+                  <span class="mono level" data-i18n="edu.native">Nativo</span>
+                </li>
+                <li>
+                  <span data-i18n="edu.english">Inglés</span>
+                  <span class="mono level">B2</span>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ================= CONTACTO ================= -->
+      <section id="contacto" class="section contact">
+        <div class="container contact-grid">
+          <div class="contact-main">
+            <h2 class="big split" data-split="chars" data-i18n="contact.title">¿Hablamos?</h2>
+            <p class="section-intro reveal" style="--i: 1" data-i18n="contact.body">
+              Estoy abierto a nuevas oportunidades como desarrollador full-stack. Escríbeme y te respondo pronto.
+            </p>
+
+            <div class="mail reveal" style="--i: 2">
+              <a class="mail-link" href="mailto:samuelsenen@gmail.com">
+                samuelsenen@gmail.com
+                <svg class="icon mail-arrow" aria-hidden="true"><use href="#i-arrow-up-right"></use></svg>
+              </a>
+              <button class="btn btn-ghost copy magnetic" type="button" data-email="samuelsenen@gmail.com">
+                <svg class="icon icon-md i-copy" aria-hidden="true"><use href="#i-copy"></use></svg>
+                <svg class="icon icon-md i-check" aria-hidden="true"><use href="#i-check"></use></svg>
+                <span class="copy-label" data-i18n="contact.copy">Copiar email</span>
+              </button>
+              <span class="sr-only" aria-live="polite" data-copy-status></span>
+            </div>
+          </div>
+
+          <!-- Datos de contacto y enlaces -->
+          <ul class="contact-card reveal" style="--i: 3">
+            <li>
+              <span class="label mono" data-i18n="contact.statusLabel">Estado</span>
+              <span class="value"><span class="status-dot" aria-hidden="true"></span><span data-i18n="contact.status">Abierto a nuevas oportunidades</span></span>
+            </li>
+            <li>
+              <span class="label mono" data-i18n="contact.locationLabel">Ubicación</span>
+              <span class="value" data-i18n="contact.location">Guadalajara, España</span>
+            </li>
+            <li>
+              <span class="label mono">LinkedIn</span>
+              <a class="value" href="https://www.linkedin.com/in/samuel-senen-673502163" target="_blank" rel="noopener noreferrer">
+                <span data-i18n="contact.linkedin">Ver perfil</span>
+                <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"></use></svg>
+              </a>
+            </li>
+            <li>
+              <span class="label mono">GitHub</span>
+              <a class="value" href="https://github.com/samuelseenen" target="_blank" rel="noopener noreferrer">
+                <span>samuelseenen</span>
+                <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up-right"></use></svg>
+              </a>
+            </li>
+            <li>
+              <span class="label mono">CV</span>
+              <a class="value" href="assets/cv-samuel-senen.pdf" download>
+                <span data-i18n="contact.cv">Descargar PDF</span>
+                <svg class="icon icon-sm" aria-hidden="true"><use href="#i-download"></use></svg>
+              </a>
+            </li>
+          </ul>
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <div class="container foot">
+        <p>© <span data-year>2026</span> Samuel Senén López. <span data-i18n="footer.rights">Todos los derechos reservados.</span></p>
+        <a class="to-top" href="#main">
+          <span data-i18n="footer.top">Volver arriba</span>
+          <svg class="icon icon-sm" aria-hidden="true"><use href="#i-arrow-up"></use></svg>
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>
