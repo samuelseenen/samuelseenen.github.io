@@ -1090,9 +1090,10 @@ html:not(.js) .banner .f {
   }
 }
 
+/* 6 columnas: QR (4) + emails (2) arriba; WordPress (2) + banners (4) abajo */
 .bento {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   gap: 0.875rem;
   margin-top: 0.875rem;
 }
@@ -1135,7 +1136,7 @@ html:not(.js) .banner .f {
 
 /* Sistema QR: celda ancha con el recorrido de la petición */
 .qr {
-  grid-column: span 3;
+  grid-column: span 4;
   display: grid;
   grid-template-columns: 1fr auto;
   gap: 2rem;
@@ -1149,7 +1150,7 @@ html:not(.js) .banner .f {
 /* Banners: formatos dibujados a escala */
 /* Banners: texto y formatos a la izquierda, el banner interactivo a la derecha */
 .banners {
-  grid-column: span 3;
+  grid-column: span 4;
   display: grid;
   grid-template-columns: minmax(0, 1fr) 300px;
   gap: 2rem;
@@ -1335,7 +1336,7 @@ html:not(.js) .banner .f {
 /* ---------- 9. Stack ---------- */
 .groups {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 2rem;
   margin-top: 2rem;
 }
@@ -1377,15 +1378,7 @@ html:not(.js) .banner .f {
   letter-spacing: -0.02em;
 }
 
-.learning::before {
-  background: var(--accent);
-}
-
-.learning h3 {
-  color: var(--accent);
-}
-
-@media (max-width: 899px) {
+@media (max-width: 599px) {
   .groups {
     grid-template-columns: repeat(2, 1fr);
   }
