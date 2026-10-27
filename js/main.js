@@ -118,6 +118,76 @@
     });
   });
 
+  /* ---------- Línea del tiempo de la experiencia ----------
+     Cada etapa se coloca y se mide según sus fechas, de 2021 a hoy. La
+     etapa actual llega siempre hasta el día de hoy. */
+  const chrono = document.querySelector('.chrono');
+  const CHRONO_START = new Date(2021, 0, 1);
+  const today = new Date();
+
+  // "2023-10" → 15 de octubre de 2023 (mitad de mes, para que dos etapas
+  // seguidas que comparten mes no se monten una encima de otra)
+  const midMonth = (ym) => {
+    const [y, m] = ym.split('-').map(Number);
+    return new Date(y, m - 1, 15);
+  };
+  const toPercent = (date) => ((date - CHRONO_START) / (today - CHRONO_START)) * 100;
+
+  chrono.querySelectorAll('.seg').forEach((seg) => {
+    const from = toPercent(midMonth(seg.dataset.from));
+    const to = seg.dataset.to ? toPercent(midMonth(seg.dataset.to)) : 100;
+    seg.style.setProperty('--l', `${from}%`);
+    seg.style.setProperty('--w', `${Math.max(0, to - from)}%`);
+  });
+
+  // Años en el eje y la marca de "hoy"
+  const axis = chrono.querySelector('.chrono-axis');
+  for (let year = CHRONO_START.getFullYear(); year <= today.getFullYear(); year++) {
+    const tick = document.createElement('span');
+    tick.textContent = year;
+    tick.style.left = `${toPercent(new Date(year, 0, 1))}%`;
+    if (year === CHRONO_START.getFullYear()) tick.className = 'first';
+    axis.append(tick);
+  }
+  const todayTick = document.createElement('span');
+  todayTick.className = 'today';
+  todayTick.dataset.i18n = 'exp.today';
+  todayTick.textContent = site.t('exp.today');
+  todayTick.style.left = '100%';
+  axis.append(todayTick);
+
+  // Pasar el ratón por una etapa resalta su trabajo en la lista, y al revés
+  const highlight = (job, on) => {
+    document.querySelectorAll(`[data-job="${job}"]`).forEach((el) => el.classList.toggle('is-hl', on));
+  };
+  document.querySelectorAll('.seg[data-job], .job[data-job]').forEach((el) => {
+    el.addEventListener('pointerenter', () => highlight(el.dataset.job, true));
+    el.addEventListener('pointerleave', () => highlight(el.dataset.job, false));
+  });
+
+  // Duración de cada trabajo, contando el mes de inicio y el de fin (como
+  // LinkedIn). El actual se cuenta hasta este mes.
+  function formatDuration(months) {
+    const y = Math.floor(months / 12);
+    const m = months % 12;
+    const es = site.lang === 'es';
+    const parts = [];
+    if (y) parts.push(es ? `${y} ${y === 1 ? 'año' : 'años'}` : `${y} ${y === 1 ? 'year' : 'years'}`);
+    if (m) parts.push(es ? `${m} ${m === 1 ? 'mes' : 'meses'}` : `${m} ${m === 1 ? 'month' : 'months'}`);
+    return parts.join(es ? ' y ' : ', ');
+  }
+
+  function updateDurations() {
+    document.querySelectorAll('.dur').forEach((el) => {
+      const [y1, m1] = el.dataset.from.split('-').map(Number);
+      const [y2, m2] = el.dataset.to ? el.dataset.to.split('-').map(Number) : [today.getFullYear(), today.getMonth() + 1];
+      el.textContent = formatDuration((y2 - y1) * 12 + (m2 - m1) + 1);
+    });
+  }
+
+  updateDurations();
+  document.addEventListener('langchange', updateDurations);
+
   /* ---------- Capturas del proyecto destacado ----------
      Cada miniatura muestra su captura en la imagen grande */
   const shotMain = document.querySelector('.shot-main');

@@ -366,8 +366,16 @@ a {
     transform: translateY(115%);
   }
 
-  .js .rail-fill {
-    transform: scaleY(0);
+  /* Las etapas de la línea del tiempo crecen de izquierda a derecha al
+     verse (animations.js añade .is-in) */
+  .js .chrono .seg {
+    transform: scaleX(0);
+    transition: transform 0.9s var(--ease-out), background-color 0.2s ease;
+    transition-delay: calc(var(--i, 0) * 120ms), 0s;
+  }
+
+  .js .chrono.is-in .seg {
+    transform: none;
   }
 }
 
@@ -877,25 +885,150 @@ html:not(.js) .banner .f {
 }
 
 .timeline {
-  position: relative;
   max-width: 860px;
-  padding-left: 2rem;
 }
 
-.rail {
+/* Línea del tiempo a escala (main.js pone --l y --w en cada etapa a partir
+   de sus fechas). Las etapas pasadas en gris, la actual en azul y los
+   estudios solo con borde. */
+.chrono {
+  display: grid;
+  gap: 0.75rem;
+  max-width: 860px;
+}
+
+.chrono-row {
+  display: grid;
+  grid-template-columns: 5.5rem minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.chrono-label {
+  padding-top: 0.2rem;
+  font-size: 0.8125rem;
+  color: var(--muted);
+}
+
+.chrono-track {
+  position: relative;
+  height: 1.5rem;
+  margin-bottom: 1.4rem; /* sitio para los nombres de debajo */
+  border-radius: 4px;
+  background: var(--surface-2);
+}
+
+.seg {
   position: absolute;
-  left: 0;
-  top: 0.5rem;
+  top: 0;
   bottom: 0;
-  width: 1px;
-  background: var(--border);
+  left: var(--l, 0);
+  width: var(--w, 0);
+  min-width: 4px;
+  border-radius: 4px;
+  background: var(--border-strong);
+  transform-origin: left center;
+  transition: background-color 0.2s ease;
 }
 
-.rail-fill {
-  position: absolute;
-  inset: 0;
+.seg-study {
+  background: transparent;
+  box-shadow: inset 0 0 0 1px var(--border-strong);
+}
+
+.seg-now {
   background: var(--accent);
-  transform-origin: top;
+}
+
+.seg.is-hl {
+  background: var(--text);
+}
+
+.seg-now.is-hl {
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-soft);
+}
+
+.seg-name {
+  position: absolute;
+  top: calc(100% + 0.35rem);
+  left: 0;
+  font-size: 0.75rem;
+  white-space: nowrap;
+  color: var(--muted);
+}
+
+/* La etapa actual termina en "hoy": su nombre se alinea a la derecha */
+.seg-now .seg-name {
+  left: auto;
+  right: 0;
+  color: var(--accent);
+}
+
+.chrono-axis {
+  position: relative;
+  height: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.chrono-axis span {
+  position: absolute;
+  top: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  transform: translateX(-50%);
+}
+
+.chrono-axis span::before {
+  content: '';
+  position: absolute;
+  top: -0.3rem;
+  left: 50%;
+  width: 1px;
+  height: 0.25rem;
+  background: var(--border-strong);
+}
+
+/* El primer año empieza en el borde: se alinea hacia dentro, no centrado */
+.chrono-axis .first {
+  transform: none;
+}
+
+.chrono-axis .first::before {
+  left: 0;
+}
+
+.chrono-axis .today {
+  transform: translateX(-100%);
+  color: var(--accent);
+}
+
+.chrono-axis .today::before {
+  left: auto;
+  right: 0;
+  background: var(--accent);
+}
+
+/* En la lista, el trabajo resaltado desde la línea del tiempo */
+.job {
+  transition: background-color 0.2s ease;
+}
+
+.job.is-hl h3 {
+  color: var(--accent);
+}
+
+@media (max-width: 599px) {
+  .chrono-row {
+    grid-template-columns: 1fr;
+    gap: 0.35rem;
+  }
+
+  .chrono-row > span:empty {
+    display: none;
+  }
 }
 
 .job {
@@ -914,32 +1047,16 @@ html:not(.js) .banner .f {
   padding-top: 0.4rem;
 }
 
-.node {
-  position: absolute;
-  left: calc(-2rem - 4px);
-  top: 2.45rem;
-  width: 9px;
-  height: 9px;
-  border-radius: 50%;
-  border: 1px solid var(--border-strong);
-  background: var(--bg);
-  transition: background-color 0.4s ease, border-color 0.4s ease, box-shadow 0.4s ease;
-}
-
-.job:first-child .node {
-  top: 0.85rem;
-}
-
-.job.active .node {
-  background: var(--accent);
-  border-color: var(--accent);
-  box-shadow: 0 0 0 5px var(--accent-soft);
-}
-
 .dates {
   font-size: 0.8125rem;
   color: var(--muted);
   padding-top: 0.3rem;
+}
+
+.dur {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.75rem;
 }
 
 .now {
@@ -1399,10 +1516,22 @@ html:not(.js) .banner .f {
   font-size: clamp(1.375rem, 2.4vw, 1.75rem);
 }
 
-/* Cómo empecé: texto corrido, a la anchura cómoda de lectura */
-.origin {
-  max-width: 64ch;
+/* Cómo empecé y Cómo trabajo: dos columnas de texto corrido */
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(2rem, 6vw, 5rem);
   margin-bottom: clamp(3.5rem, 7vw, 5rem);
+}
+
+.origin {
+  max-width: 60ch;
+}
+
+@media (max-width: 767px) {
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 .origin p {

@@ -37,6 +37,7 @@
   // Si GSAP no ha cargado (por ejemplo, sin conexión), se muestra todo sin animar
   if (!window.gsap || !window.ScrollTrigger) {
     document.querySelectorAll('.split').forEach((el) => el.classList.add('done'));
+    document.querySelector('.chrono').classList.add('is-in');
     root.classList.remove('js');
     return;
   }
@@ -157,16 +158,6 @@
         );
       });
 
-      // La línea de tiempo de la experiencia se dibuja con el scroll
-      gsap.fromTo(
-        '.rail-fill',
-        { scaleY: 0 },
-        {
-          scaleY: 1,
-          ease: 'none',
-          scrollTrigger: { trigger: '.timeline', start: afterTunnel('top', '60%'), end: afterTunnel('bottom', '60%'), scrub: 0.5 },
-        },
-      );
 
       // Tarjetas de "Lo que he construido"
       gsap.fromTo(
@@ -272,13 +263,13 @@
   // Las fuentes cambian la altura del texto: se recalculan posiciones al cargarlas
   if (document.fonts) document.fonts.ready.then(() => ScrollTrigger.refresh());
 
-  // Puntos de la línea de tiempo: se encienden al llegar a cada trabajo
-  document.querySelectorAll('.job').forEach((job) => {
-    ScrollTrigger.create({
-      trigger: job,
-      start: afterTunnel('top', '60%'),
-      onEnter: () => job.classList.add('active'),
-      onLeaveBack: () => job.classList.remove('active'),
-    });
+  // Línea del tiempo de la experiencia: las etapas crecen una vez al verse
+  // (la transición está en styles.css). Durante el túnel la sección está
+  // fijada, por eso se cuenta desde el final del túnel.
+  ScrollTrigger.create({
+    trigger: '.chrono',
+    start: afterTunnel('top', '85%'),
+    once: true,
+    onEnter: () => document.querySelector('.chrono').classList.add('is-in'),
   });
 })();

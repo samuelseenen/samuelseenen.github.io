@@ -48,6 +48,10 @@ window.TRANSLATIONS = {
     'exp.title': 'Experiencia',
     'exp.intro': 'Algo más de dos años de trabajo, la mayor parte en publicidad digital.',
     'exp.now': 'Actualidad',
+    'exp.rowStudy': 'Estudios',
+    'exp.rowWork': 'Trabajo',
+    'exp.segStudy': 'Ciclo DAW',
+    'exp.today': 'hoy',
     'exp.tags': 'Tecnologías',
     'exp1.dates': 'Feb 2026 -',
     'exp1.role': 'Front-End Developer',
@@ -106,6 +110,11 @@ window.TRANSLATIONS = {
     'origin.p2':
       'De ahí pasé al ciclo de Desarrollo de Aplicaciones Web y desde entonces no he parado: primero PHP, MySQL y WordPress; después banners y emails en agencia; y ahora sigo con Node.js y Angular, que ya usé en mi proyecto de fin de ciclo. Lo que me gustó aquel primer día sigue igual: escribir algo y ver cómo funciona.',
     'origin.p3': 'Fuera de la pantalla: música a todas horas y gimnasio.',
+    'howiwork.title': 'Cómo trabajo',
+    'howiwork.p1':
+      'Con cualquier cosa nueva, lo primero que hago es intentar que funcione, aunque sea de cualquier manera. Cuando ya funciona, la ordeno y la pulo. Paso más tiempo probando en el navegador que planeando en papel.',
+    'howiwork.p2':
+      'En el trabajo me pasa lo mismo: antes de dar un banner por terminado lo abro en todos los navegadores y móviles que tengo a mano. Hasta que no lo veo funcionar en todos, no me quedo tranquilo.',
     'edu.title': 'Formación',
     'edu.dam': 'CFGS Desarrollo de Aplicaciones Web',
     'edu.bach': 'Bachillerato de Ciencias',
@@ -166,6 +175,10 @@ window.TRANSLATIONS = {
     'exp.title': 'Experience',
     'exp.intro': 'A little over two years of work, most of it in digital advertising.',
     'exp.now': 'Present',
+    'exp.rowStudy': 'Studies',
+    'exp.rowWork': 'Work',
+    'exp.segStudy': 'Web dev diploma',
+    'exp.today': 'today',
     'exp.tags': 'Technologies',
     'exp1.dates': 'Feb 2026 -',
     'exp1.role': 'Front-End Developer',
@@ -221,6 +234,11 @@ window.TRANSLATIONS = {
     'origin.p2':
       "That led me to a vocational diploma in Web Application Development, and I haven't stopped since: first PHP, MySQL and WordPress, then banners and emails at agencies, and now Node.js and Angular, which I already used in my final project. What I liked that first day hasn't changed: writing something and watching it work.",
     'origin.p3': 'Away from the screen: music all day and the gym.',
+    'howiwork.title': 'How I work',
+    'howiwork.p1':
+      "With anything new, the first thing I do is try to get it working, however rough. Once it works, I tidy it up and polish it. I spend more time testing in the browser than planning on paper.",
+    'howiwork.p2':
+      "It's the same at work: before I call a banner done, I open it in every browser and phone I can get my hands on. Until I've seen it work in all of them, I'm not happy.",
     'edu.title': 'Education',
     'edu.dam': 'Higher Vocational Diploma in Web Application Development',
     'edu.bach': 'Science Baccalaureate',
