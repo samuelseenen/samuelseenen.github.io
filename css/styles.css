@@ -187,6 +187,13 @@ a {
   mix-blend-mode: normal;
 }
 
+/* Durante el cambio de tema los colores cambian de golpe dentro del círculo */
+.theme-switching *,
+.theme-switching *::before,
+.theme-switching *::after {
+  transition: none !important;
+}
+
 /* ---------- 3. Utilidades y botones ---------- */
 .icon {
   flex-shrink: 0;

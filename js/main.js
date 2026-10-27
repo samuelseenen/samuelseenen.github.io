@@ -110,12 +110,23 @@
     const y = r.top + r.height / 2;
     const radius = Math.hypot(Math.max(x, innerWidth - x), Math.max(y, innerHeight - y));
 
-    document.startViewTransition(toggleTheme).ready.then(() => {
-      root.animate(
-        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
-        { duration: 650, easing: 'cubic-bezier(0.16, 1, 0.3, 1)', pseudoElement: '::view-transition-new(root)' },
-      );
-    });
+    // Mientras dura el cambio, nada hace su propia transición de color: si no,
+    // botones y bordes cambiarían de color con retraso dentro del círculo
+    root.classList.add('theme-switching');
+
+    const transition = document.startViewTransition(toggleTheme);
+    transition.ready
+      .then(() => {
+        // Curva suave al empezar y al terminar, para que el círculo no frene de golpe
+        root.animate(
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
+          { duration: 750, easing: 'cubic-bezier(0.65, 0, 0.35, 1)', pseudoElement: '::view-transition-new(root)' },
+        );
+      })
+      // Si el navegador cancela la transición (pestaña en segundo plano…),
+      // el tema ya ha cambiado igualmente: no hay nada que hacer
+      .catch(() => {});
+    transition.finished.finally(() => root.classList.remove('theme-switching'));
   });
 
   /* ---------- Línea del tiempo de la experiencia ----------
@@ -195,6 +206,7 @@
 
   thumbs.forEach((thumb) => {
     thumb.addEventListener('click', () => {
+      shotMain.srcset = thumb.dataset.srcset;
       shotMain.src = thumb.dataset.src;
       shotMain.dataset.i18nAlt = thumb.dataset.altKey;
       shotMain.alt = site.t(thumb.dataset.altKey);

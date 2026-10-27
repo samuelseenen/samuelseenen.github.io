@@ -41,9 +41,9 @@
     <!-- Tipografías alojadas en el propio sitio: Schibsted Grotesk (texto y títulos) e IBM Plex Mono (código, fechas y medidas) -->
     <link rel="preload" href="assets/fonts/schibsted-grotesk.woff2" as="font" type="font/woff2" crossorigin />
     <link rel="preload" href="assets/fonts/ibm-plex-mono-400.woff2" as="font" type="font/woff2" crossorigin />
-    <!-- ?v=11: al cambiar el CSS o el JS, sube este número en todos los enlaces
+    <!-- ?v=12: al cambiar el CSS o el JS, sube este número en todos los enlaces
          para que los navegadores descarguen la versión nueva y no usen la guardada -->
-    <link rel="stylesheet" href="css/styles.css?v=11" />
+    <link rel="stylesheet" href="css/styles.css?v=12" />
 
     <!-- Se ejecuta antes de pintar la página para evitar parpadeos de tema e idioma -->
     <script>
@@ -80,8 +80,8 @@
     </style>
 
     <!-- Textos e idioma primero, para no esperar a GSAP antes de mostrar la página -->
-    <script defer src="js/i18n.js?v=11"></script>
-    <script defer src="js/main.js?v=11"></script>
+    <script defer src="js/i18n.js?v=12"></script>
+    <script defer src="js/main.js?v=12"></script>
 
     <!-- GSAP (animaciones) desde CDN, con comprobación de integridad -->
     <script
@@ -98,9 +98,9 @@
     ></script>
 
     <!-- Scripts que usan GSAP (el orden importa) -->
-    <script defer src="js/banner.js?v=11"></script>
-    <script defer src="js/hero-canvas.js?v=11"></script>
-    <script defer src="js/animations.js?v=11"></script>
+    <script defer src="js/banner.js?v=12"></script>
+    <script defer src="js/hero-canvas.js?v=12"></script>
+    <script defer src="js/animations.js?v=12"></script>
   </head>
 
   <body>
@@ -126,8 +126,9 @@
     <!-- ================= NAVEGACIÓN ================= -->
     <header class="nav">
       <div class="container nav-inner">
-        <a class="logo" href="#main" aria-label="Samuel Senén López">
+        <a class="logo" href="#main">
           <span aria-hidden="true">&lt;</span>SSL<span aria-hidden="true">/&gt;</span>
+          <span class="sr-only">· Samuel Senén López</span>
         </a>
 
         <nav class="links" id="nav-links" data-i18n-aria="nav.label" aria-label="Principal">
@@ -138,10 +139,12 @@
         </nav>
 
         <div class="actions">
-          <button class="lang" type="button" data-i18n-aria="nav.switchLang" aria-label="Switch to English">
+          <!-- El nombre accesible incluye el texto visible (ES EN) y lo que hace -->
+          <button class="lang" type="button">
             <span data-lang="es">ES</span>
             <span class="sep" aria-hidden="true">/</span>
             <span data-lang="en">EN</span>
+            <span class="sr-only" data-i18n="nav.switchLang">Switch to English</span>
           </button>
           <button class="icon-btn theme-toggle" type="button" aria-label="Activar modo claro">
             <svg class="icon icon-md i-sun" aria-hidden="true"><use href="#i-sun"></use></svg>
@@ -330,22 +333,22 @@
             </div>
 
             <figure class="project-shots">
-              <img class="shot-main" src="assets/projects/urbano97/inicio.jpg" width="1400" height="604" loading="lazy" decoding="async" alt="Página de inicio de Urbano97" data-i18n-alt="project.alt.inicio" />
+              <img class="shot-main" src="assets/projects/urbano97/inicio.jpg" srcset="assets/projects/urbano97/inicio-800.jpg 800w, assets/projects/urbano97/inicio.jpg 1400w" sizes="(max-width: 899px) calc(100vw - 4rem), 620px" width="1400" height="604" loading="lazy" decoding="async" alt="Página de inicio de Urbano97" data-i18n-alt="project.alt.inicio" />
               <div class="thumbs" role="group" data-i18n-aria="project.shots" aria-label="Capturas">
-                <button class="thumb is-current" type="button" aria-pressed="true" data-src="assets/projects/urbano97/inicio.jpg" data-alt-key="project.alt.inicio">
-                  <img src="assets/projects/urbano97/inicio.jpg" width="1400" height="604" loading="lazy" decoding="async" alt="" />
+                <button class="thumb is-current" type="button" aria-pressed="true" data-src="assets/projects/urbano97/inicio.jpg" data-srcset="assets/projects/urbano97/inicio-800.jpg 800w, assets/projects/urbano97/inicio.jpg 1400w" data-alt-key="project.alt.inicio">
+                  <img src="assets/projects/urbano97/inicio-400.jpg" width="400" height="172" loading="lazy" decoding="async" alt="" />
                   <span class="sr-only" data-i18n="project.shot.inicio">Inicio</span>
                 </button>
-                <button class="thumb" type="button" aria-pressed="false" data-src="assets/projects/urbano97/reservar.jpg" data-alt-key="project.alt.reservar">
-                  <img src="assets/projects/urbano97/reservar.jpg" width="1400" height="604" loading="lazy" decoding="async" alt="" />
+                <button class="thumb" type="button" aria-pressed="false" data-src="assets/projects/urbano97/reservar.jpg" data-srcset="assets/projects/urbano97/reservar-800.jpg 800w, assets/projects/urbano97/reservar.jpg 1400w" data-alt-key="project.alt.reservar">
+                  <img src="assets/projects/urbano97/reservar-400.jpg" width="400" height="172" loading="lazy" decoding="async" alt="" />
                   <span class="sr-only" data-i18n="project.shot.reservar">Reservar cita</span>
                 </button>
-                <button class="thumb" type="button" aria-pressed="false" data-src="assets/projects/urbano97/servicios.jpg" data-alt-key="project.alt.servicios">
-                  <img src="assets/projects/urbano97/servicios.jpg" width="1400" height="604" loading="lazy" decoding="async" alt="" />
+                <button class="thumb" type="button" aria-pressed="false" data-src="assets/projects/urbano97/servicios.jpg" data-srcset="assets/projects/urbano97/servicios-800.jpg 800w, assets/projects/urbano97/servicios.jpg 1400w" data-alt-key="project.alt.servicios">
+                  <img src="assets/projects/urbano97/servicios-400.jpg" width="400" height="172" loading="lazy" decoding="async" alt="" />
                   <span class="sr-only" data-i18n="project.shot.servicios">Servicios</span>
                 </button>
-                <button class="thumb" type="button" aria-pressed="false" data-src="assets/projects/urbano97/login.jpg" data-alt-key="project.alt.login">
-                  <img src="assets/projects/urbano97/login.jpg" width="1400" height="604" loading="lazy" decoding="async" alt="" />
+                <button class="thumb" type="button" aria-pressed="false" data-src="assets/projects/urbano97/login.jpg" data-srcset="assets/projects/urbano97/login-800.jpg 800w, assets/projects/urbano97/login.jpg 1400w" data-alt-key="project.alt.login">
+                  <img src="assets/projects/urbano97/login-400.jpg" width="400" height="172" loading="lazy" decoding="async" alt="" />
                   <span class="sr-only" data-i18n="project.shot.login">Inicio de sesión</span>
                 </button>
               </div>
